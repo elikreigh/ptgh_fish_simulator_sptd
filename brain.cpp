@@ -25,7 +25,7 @@ Move_State brain::moveState(int input){
         case(S_Move): return Move;
         case(S_Feed): return Feed;
     }
-    return Idle;
+    return Idle; //If state machine fails, fish goes to Idle state
 }
 
 Move_Type brain::moveTypeState(int input){
@@ -93,7 +93,7 @@ Move_Type brain::moveTypeState(int input){
         case(S_BackRight): return BackRight;
         case(S_BackLeft): return BackLeft;
     }
-    return Up;
+    return Up; //If state machine fails, fish swims upwards
 }
 
 void brain::decision(){
@@ -107,6 +107,24 @@ void brain::decision(){
         case(Move):
             driver = rand() % 26;
             direction = moveTypeState(driver);
+            switch(direction){
+                case(Up):
+                    break;
+                case(Down):
+                    break;
+                case(Left):
+                    break;
+                case(Right):
+                    break;
+                case(UpLeft):
+                    break;
+                case(UpRight):
+                    break;
+                case(DownLeft):
+                    break;
+                case(DownRight):
+                    break;
+            }
             break;
         case(Feed):
             isFood = false;
