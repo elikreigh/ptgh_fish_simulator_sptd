@@ -92,3 +92,20 @@ Move_Type brain::moveTypeState(int input){
         case(S_BackLeft): return BackLeft;
     }
 }
+
+void brain::decision(){
+    int driver;
+    srand(time(NULL));
+    driver = rand() % 2;
+    currentState = moveState(driver);
+    switch(currentState){
+        case(Idle):
+            break;
+        case(Move):
+            driver = rand() % 26;
+            direction = moveTypeState(driver);
+            break;
+        case(Feed):
+            break;
+    }
+}
