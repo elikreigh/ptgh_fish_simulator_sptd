@@ -1,4 +1,6 @@
 #include "brain.h"
+#include <stdlib.h>
+#include <time.h>
 
 brain::brain()
 {
@@ -23,7 +25,7 @@ Move_State brain::moveState(int input){
         case(S_Move): return Move;
         case(S_Feed): return Feed;
     }
-    return
+    return Idle;
 }
 
 Move_Type brain::moveTypeState(int input){
@@ -91,6 +93,7 @@ Move_Type brain::moveTypeState(int input){
         case(S_BackRight): return BackRight;
         case(S_BackLeft): return BackLeft;
     }
+    return Up;
 }
 
 void brain::decision(){
@@ -106,6 +109,7 @@ void brain::decision(){
             direction = moveTypeState(driver);
             break;
         case(Feed):
+            isFood = false;
             break;
     }
 }
