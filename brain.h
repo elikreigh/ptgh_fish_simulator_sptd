@@ -6,8 +6,9 @@ class brain
 {
 public:
     brain();
-    moveState(int input);
-    moveTypeState(int input);
+    Move_State moveState(int input);
+    Move_Type moveTypeState(int input);
+    void decision();
     typedef enum {Move, Idle, Feed} Move_State;
     typedef enum {Up, Down, Left, Right, Forward, Back,
                   UpBack, UpForward, UpRight, UpLeft, UpBackRight, UpBackLeft, UpForwardRight,
@@ -16,6 +17,8 @@ public:
                   BackRight, BackLeft} Move_Type;
 private:
     bool isFood;
+    moveState currentState;
+    moveTypeState direction;
 };
 
 #endif // BRAIN_H
