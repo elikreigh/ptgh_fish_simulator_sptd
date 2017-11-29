@@ -11,7 +11,7 @@ class brain
 {
 public:
     brain();
-    brain(int x, int y);
+    brain(int x, int y, int width, int height);
     Move_State moveState(int input);
     Move_Type moveTypeState(int input);
     void decision();
@@ -34,6 +34,8 @@ private:
     enum Move_Type direction;
     int x_att;
     int y_att;
+    int max_height;
+    int max_width;
 };
 
 #endif // BRAIN_H

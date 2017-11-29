@@ -6,11 +6,15 @@ brain::brain()
 {
     x_att = 50;
     y_att = 10;
+    max_width = 1000;
+    max_height = 1000;
 }
 
-brain::brain(int x, int y){
+brain::brain(int x, int y, int width, int height){
     x_att = x;
     y_att = y;
+    max_width = width;
+    max_height = height;
 }
 
 int brain::getX(){
@@ -23,13 +27,13 @@ int brain::getY(){
 
 void brain::setX(int new_x){
     if (new_x < 0) x_att = 0;
-    else if (new_x > 9) x_att = 9;
+    else if (new_x > max_width) x_att = max_width;
     else x_att = new_x;
 }
 
 void brain::setY(int new_y){
     if (new_y < 0) y_att = 0;
-    else if (new_y > 9) y_att = 9;
+    else if (new_y > max_height) y_att = max_height;
     else y_att = new_y;
 }
 
