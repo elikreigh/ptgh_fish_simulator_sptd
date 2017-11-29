@@ -11,15 +11,29 @@ class brain
 {
 public:
     brain();
+    brain(int x, int y);
     Move_State moveState(int input);
     Move_Type moveTypeState(int input);
     void decision();
-
+    void moveLeft();
+    void moveRight();
+    void moveUp();
+    void moveDown();
+    void moveUpRight();
+    void moveUpLeft();
+    void moveDownRight();
+    void moveDownLeft();
+    int getX();
+    int getY();
+    void setX(int new_x);
+    void setY(int new_y);
 
 private:
     bool isFood;
     enum Move_State currentState;
     enum Move_Type direction;
+    int x_att;
+    int y_att;
 };
 
 #endif // BRAIN_H

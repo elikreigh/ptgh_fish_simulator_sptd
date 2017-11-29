@@ -4,7 +4,69 @@
 
 brain::brain()
 {
+    x_att = 50;
+    y_att = 10;
+}
 
+brain::brain(int x, int y){
+    x_att = x;
+    y_att = y;
+}
+
+int brain::getX(){
+    return x_att;
+}
+
+int brain::getY(){
+    return y_att;
+}
+
+void brain::setX(int new_x){
+    if (new_x < 0) x_att = 0;
+    else if (new_x > 9) x_att = 9;
+    else x_att = new_x;
+}
+
+void brain::setY(int new_y){
+    if (new_y < 0) y_att = 0;
+    else if (new_y > 9) y_att = 9;
+    else y_att = new_y;
+}
+
+void brain::moveLeft(){
+    setX(x_att - 1);
+}
+
+void brain::moveRight(){
+    setX(x_att + 1);
+}
+
+void brain::moveUp(){
+    setY(y_att - 1);
+}
+
+void brain::moveDown(){
+    setY(y_att + 1);
+}
+
+void brain::moveUpRight(){
+    setX(x_att + 1);
+    setY(y_att - 1);
+}
+
+void brain::moveUpLeft(){
+    setX(x_att - 1);
+    setY(y_att - 1);
+}
+
+void brain::moveDownRight(){
+    setX(x_att + 1);
+    setY(y_att + 1);
+}
+
+void brain::moveDownLeft(){
+    setX(x_att - 1);
+    setY(y_att + 1);
 }
 
 Move_State brain::moveState(int input){
@@ -109,21 +171,31 @@ void brain::decision(){
             direction = moveTypeState(driver);
             switch(direction){
                 case(Up):
+                    moveUp();
                     break;
                 case(Down):
+                    moveDown();
                     break;
                 case(Left):
+                    moveLeft();
                     break;
                 case(Right):
+                    moveRight();
                     break;
                 case(UpLeft):
+                    moveUpLeft();
                     break;
                 case(UpRight):
+                    moveUpRight();
                     break;
                 case(DownLeft):
+                    moveDownLeft();
                     break;
                 case(DownRight):
+                    moveDownRight();
                     break;
+                default:
+                    currentState = Idle;
             }
             break;
         case(Feed):
