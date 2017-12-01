@@ -11,7 +11,8 @@ class brain
 {
 public:
     brain();
-    brain(int x, int y, int width, int height);
+    brain(int x, int y, int width, int height, int fwidth, int fheight);
+    brain(brain *other);
     Move_State moveState(int input);
     Move_Type moveTypeState(int input);
     void decision();
@@ -23,10 +24,14 @@ public:
     void moveUpLeft();
     void moveDownRight();
     void moveDownLeft();
-    int getX();
-    int getY();
     void setX(int new_x);
     void setY(int new_y);
+    int getX();
+    int getY();
+    int getTop();
+    int getBottom();
+    int getLeft();
+    int getRight();
 
 private:
     bool isFood;
@@ -36,6 +41,8 @@ private:
     int y_att;
     int max_height;
     int max_width;
+    int fish_height;
+    int fish_width;
 };
 
 #endif // BRAIN_H

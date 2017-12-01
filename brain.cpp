@@ -1,78 +1,115 @@
+/*
+ * Author: Matt Westjohn
+ * Version 1.1 11/27/17
+ * Version 1.2 11/29/17
+ * Version 1.3 12/1/17
+ * Purpose: Implement the fish's movement ability, decision making ability,
+ *  and what each of those decisons does for the fish
+ * Collision detection in another file (probably mainwindow)
+ * */
 #include "brain.h"
 #include <stdlib.h>
 #include <time.h>
 
-brain::brain()
-{
+//Default constructor
+brain::brain(){
     x_att = 50;
     y_att = 10;
     max_width = 1000;
     max_height = 1000;
+    fish_width = 100;
+    fish_height = 50;
 }
 
-brain::brain(int x, int y, int width, int height){
+//Constructor to create a new fish based on parameters
+brain::brain(int x, int y, int width, int height, int fwidth, int fheight){
     x_att = x;
     y_att = y;
     max_width = width;
     max_height = height;
+    fish_height = fheight;
+    fish_width = fwidth;
 }
 
+//Constructor to create a new fish that is exactly like the old fish
+brain::brain(brain *other){
+    x_att = other->x_att;
+    y_att = other->y_att;
+    max_width = other->max_width;
+    max_height = other->max_height;
+    fish_height = other->fish_height;
+    fish_width = other->fish_width;
+}
+
+//Function to return the current x attribute of the fish
 int brain::getX(){
     return x_att;
 }
 
+//Function to return the current y attribute of the fish
 int brain::getY(){
     return y_att;
 }
 
+//Function to change the x attribute of the fish
 void brain::setX(int new_x){
     if (new_x < 0) x_att = 0;
     else if (new_x > max_width) x_att = max_width;
     else x_att = new_x;
 }
 
+//Function to change the y attribute of the fish
 void brain::setY(int new_y){
     if (new_y < 0) y_att = 0;
     else if (new_y > max_height) y_att = max_height;
     else y_att = new_y;
 }
 
+//Function to move the fish straight left
 void brain::moveLeft(){
     setX(x_att - 1);
 }
 
+//Functino to move the fish straight right
 void brain::moveRight(){
     setX(x_att + 1);
 }
 
+//Function to move the fish straight up
 void brain::moveUp(){
     setY(y_att - 1);
 }
 
+//Function to move the fish sraight down
 void brain::moveDown(){
     setY(y_att + 1);
 }
 
+//Function to move the fish diagonally up and right
 void brain::moveUpRight(){
     setX(x_att + 1);
     setY(y_att - 1);
 }
 
+//Function to move the fish diagonally up and left
 void brain::moveUpLeft(){
     setX(x_att - 1);
     setY(y_att - 1);
 }
 
+//Function to move the fish diagonally down and right
 void brain::moveDownRight(){
     setX(x_att + 1);
     setY(y_att + 1);
 }
 
+//Function to move the fush diagonally down and left
 void brain::moveDownLeft(){
     setX(x_att - 1);
     setY(y_att + 1);
 }
 
+//Function to choose the next state of the fish
 Move_State brain::moveState(int input){
     typedef enum {S_Move, S_Idle, S_Feed} SMove;
     static SMove s = S_Idle;
@@ -94,6 +131,7 @@ Move_State brain::moveState(int input){
     return Idle; //If state machine fails, fish goes to Idle state
 }
 
+//State machine to choose the next movement direction of the fish
 Move_Type brain::moveTypeState(int input){
     typedef enum {S_Up, S_Down, S_Left, S_Right, S_Forward, S_Back,
                   S_UpBack, S_UpForward, S_UpRight, S_UpLeft, S_UpBackRight, S_UpBackLeft, S_UpForwardRight,
@@ -162,6 +200,8 @@ Move_Type brain::moveTypeState(int input){
     return Up; //If state machine fails, fish swims upwards
 }
 
+//Function to implement the state of being of the fish and to choose
+// the fish's next state of being
 void brain::decision(){
     int driver;
     srand(time(NULL));
@@ -171,7 +211,7 @@ void brain::decision(){
         case(Idle):
             break;
         case(Move):
-            driver = rand() % 26;
+            driver = rand() % 30;
             direction = moveTypeState(driver);
             switch(direction){
                 case(Up):
@@ -205,5 +245,27 @@ void brain::decision(){
         case(Feed):
             isFood = false;
             break;
+        default:
+            currentState = Idle;
     }
+}
+
+//Function to return where the top of the fish is currently
+int brain::getTop(){
+    return y_att;
+}
+
+//Function to find where the bottom of the fish is currently
+int brain::getBottom(){
+    return (y_att + fish_height);
+}
+
+//Function to find where the laftmost point of the fish is currently
+int brain::getLeft(){
+    return x_att;
+}
+
+//Function to find where the rightmost point of the fish is currently
+int brain::getRight(){
+    return (x_att + fish_width);
 }
