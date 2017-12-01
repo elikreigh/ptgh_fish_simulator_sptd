@@ -43,6 +43,7 @@ private:
     int max_width;
     int fish_height;
     int fish_width;
+    int hunger;
 };
 
 #endif // BRAIN_H

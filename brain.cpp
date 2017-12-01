@@ -209,8 +209,10 @@ void brain::decision(){
     currentState = moveState(driver);
     switch(currentState){
         case(Idle):
+            hunger++;
             break;
         case(Move):
+            hunger++;
             driver = rand() % 30;
             direction = moveTypeState(driver);
             switch(direction){
@@ -244,6 +246,7 @@ void brain::decision(){
             break;
         case(Feed):
             isFood = false;
+            hunger = 0;
             break;
         default:
             currentState = Idle;
