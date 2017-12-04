@@ -263,7 +263,7 @@ int brain::getBottom(){
     return (y_att + fish_height);
 }
 
-//Function to find where the laftmost point of the fish is currently
+//Function to find where the leftmost point of the fish is currently
 int brain::getLeft(){
     return x_att;
 }
@@ -271,4 +271,8 @@ int brain::getLeft(){
 //Function to find where the rightmost point of the fish is currently
 int brain::getRight(){
     return (x_att + fish_width);
+}
+
+Move_State brain::getState(){
+    return currentState;
 }

@@ -15,6 +15,7 @@ public:
     brain(brain *other);
     Move_State moveState(int input);
     Move_Type moveTypeState(int input);
+    Move_State getState();
     void decision();
     void moveLeft();
     void moveRight();
