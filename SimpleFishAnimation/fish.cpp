@@ -6,7 +6,7 @@
 Fish::Fish(int window_width, int window_height){
     this->face_left = true;
     sprite_index = 0;
-    f_brain = new brain(ui_fish->x(),ui_fish->y(),window_width,window_height,ui_fish->width(),ui_fish->height());
+    f_brain = new brain(window_width,window_height);
 }
 
 Fish::Fish(Fish *newFish){
@@ -37,15 +37,20 @@ void Fish::set_fish(QLabel *fish){
     ui_fish = fish;
 }
 
+void Fish::brain_setup(){
+    f_brain->setX(ui_fish->x());
+    f_brain->setY(ui_fish->y());
+    f_brain->set_fwidth(ui_fish->width());
+    f_brain->set_fheight(ui_fish->height());
+}
+
 /*Mutator for state*/
 void Fish::set_left(bool lft){
     face_left = lft;
 }
 
 void Fish::swim(){
-    cycle_sprite();
     f_brain->decision();
-    ui_fish->move(f_brain->getX(), f_brain->getY());
 }
 
 void Fish::swim(Move_Type direction){
@@ -69,7 +74,7 @@ void Fish::cycle_sprite(){
     //Default sprite is idle, toggles between fin states
     //Flips QPixmap if right
     //Frames will be moved to an attribute of fish and not individually cycled
-    if(left){
+    if(face_left){
         if(sprite_index == 1){
             ui_fish->setPixmap(QPixmap("../Resources/FishFinUp.png"));
         }
@@ -89,4 +94,17 @@ void Fish::cycle_sprite(){
     sprite_index++;
     if(sprite_index >= 2)
         sprite_index = 0;
+}
+
+bool Fish::no_over_lap(Pillar *pile[2]){
+    bool ans = true;
+    for(int i = 0; i < 2; i++){
+        int pile_right = pile[i]->get_right();
+        int pile_left = pile[i]->get_left();
+        int pile_top = pile[i]->get_top();
+        if((f_brain->getLeft() == pile_right) || (f_brain->getRight == pile_left) || (f_brain->getBottom() == pile_top)){
+            ans = false;
+        }
+    }
+    return ans;
 }

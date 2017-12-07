@@ -7,12 +7,14 @@
 #include <QImage>
 #include <QLabel>
 #include "brain.h"
+#include "pillar.h"
 
 class Fish
 {
 public:
     Fish(int window_width, int window_height);
     Fish(Fish *newFish);
+
     void swim();
     void swim(Move_Type direction);
     void bob();
@@ -24,6 +26,8 @@ public:
     bool get_face_left();
     void set_left(bool lft);
     brain get_brain();
+    void brain_setup();
+    bool no_over_lap(Pillar* pile[2]);
 
 private:
     QLabel *ui_fish;

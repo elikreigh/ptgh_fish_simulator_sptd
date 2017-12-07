@@ -18,14 +18,16 @@ SOURCES += main.cpp\
     bubbles.cpp \
     floatingbubbles.cpp \
     fishfood.cpp \
-    brain.cpp
+    brain.cpp \
+    pillar.cpp
 
 HEADERS  += mainwindow.h \
     fish.h \
     bubbles.h \
     floatingbubbles.h \
     fishfood.h \
-    brain.h
+    brain.h \
+    pillar.h
 
 FORMS    += mainwindow.ui
 

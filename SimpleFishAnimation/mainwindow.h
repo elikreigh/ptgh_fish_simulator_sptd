@@ -8,6 +8,7 @@
 #include "bubbles.h"
 #include "floatingbubbles.h"
 #include "fishfood.h"
+#include "pillar.h"
 
 namespace Ui {
 class MainWindow;
@@ -54,8 +55,12 @@ private:
     Bubbles *bubble2;
     FloatingBubbles *single_bubble1;
     FishFood *food;
+    Pillar *pillar1;
+    Pillar *pillar2;
     //label layout
     QVBoxLayout *main_layout;
+
+    Pillar *pile[2];
 };
 
 #endif // MAINWINDOW_H

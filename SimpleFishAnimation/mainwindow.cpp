@@ -26,13 +26,16 @@ MainWindow::MainWindow(QWidget *parent) :
     splash_floater4 = new FloatingBubbles();
     splash_floater5 = new FloatingBubbles();
     splash_floater6 = new FloatingBubbles();
-    //Fish and Bubbles for tank screen
+    //Fish and Bubbles and Food and Pillars for tank screen
     mainFish = new Fish(this->width(),this->height());
     bubble1 = new Bubbles();
     bubble2 = new Bubbles();
     single_bubble1 = new FloatingBubbles();
 
     food = new FishFood();
+
+    pillar1 = new Pillar();
+    pillar2 = new Pillar();
 
     //assigning label to bubbles for splash screen
     splash_floater1->set_bubble(findChild<QLabel*>("spash_floater1"));
@@ -48,6 +51,15 @@ MainWindow::MainWindow(QWidget *parent) :
     single_bubble1->set_bubble(findChild<QLabel*>("single_bubble1"));
 
     food->set_food(findChild<QLabel*>("food1"));
+
+    pillar1->set_pillar(findChild<QLabel*>("pillar1"));
+    pillar2->set_pillar(findChild<QLabel*>("pillar2"));
+
+    mainFish->brain_setup();
+
+    //setting up pile
+    pile[0] = pillar1;
+    pile[1] = pillar2;
 
     //timer: starting move events
     //animations_timer cycles fish sprite, can be included with the moving animation
@@ -126,7 +138,7 @@ void MainWindow::movement_logic(){
             } else {
                 test_fish->set_left(test_fish->get_face_left());
             }
-            /*if(!((test_fish->get_x() == pile) || (test_fish->get_y() == pile))){
+            if(test_fish->no_over_lap(pile)){
                 if(direction == Left || direction == UpLeft || direction == DownLeft){
                     mainFish->set_left(true);
                 }
@@ -135,9 +147,10 @@ void MainWindow::movement_logic(){
                 } else {
                     mainFish->set_left(mainFish->get_face_left());
                 }
-                mainFish->swim(direction);
-            }*/
-            delete test_fish;
+                mainFish->swim(Up);
+            }
+            test_fish->~Fish();
+            mainFish->swim(DownRight);
         }
         single_bubble1->float_up();
         food->sink();

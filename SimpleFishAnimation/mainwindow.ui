@@ -479,6 +479,47 @@ font: 75 auto &quot;MS Serif&quot;;</string>
 </string>
       </property>
      </widget>
+     <widget class="QLabel" name="pillar2">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>400</y>
+        <width>71</width>
+        <height>181</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: none;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>../Resources/Pillar.png</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="pillar1">
+      <property name="geometry">
+       <rect>
+        <x>750</x>
+        <y>330</y>
+        <width>121</width>
+        <height>261</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: none;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>../Resources/Pillar.png</pixmap>
+      </property>
+     </widget>
      <zorder>GameWindow</zorder>
      <zorder>sand</zorder>
      <zorder>frame</zorder>
@@ -487,6 +528,8 @@ font: 75 auto &quot;MS Serif&quot;;</string>
      <zorder>single_bubble1</zorder>
      <zorder>food1</zorder>
      <zorder>Fish</zorder>
+     <zorder>pillar2</zorder>
+     <zorder>pillar1</zorder>
     </widget>
     <widget class="QWidget" name="setting_UI">
      <widget class="QPushButton" name="to_tank_button">

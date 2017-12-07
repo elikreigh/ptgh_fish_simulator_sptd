@@ -3,7 +3,7 @@
 FishFood::FishFood()
 {
     sprite_index = 0;
-    speed = (rand()%2+1);
+    speed = 1;
 }
 
 void FishFood::sink(){

@@ -22,13 +22,9 @@ brain::brain(){
 }
 
 //Constructor to create a new fish based on parameters
-brain::brain(int x, int y, int width, int height, int fwidth, int fheight){
-    x_att = x;
-    y_att = y;
-    max_width = width;
+brain::brain(int width, int height){
+    max_width = width-131;
     max_height = height;
-    fish_height = fheight;
-    fish_width = fwidth;
 }
 
 //Constructor to create a new fish that is exactly like the old fish
@@ -39,6 +35,14 @@ brain::brain(brain *other){
     max_height = other->max_height;
     fish_height = other->fish_height;
     fish_width = other->fish_width;
+}
+
+void brain::set_fwidth(int width){
+    fish_width = width;
+}
+
+void brain::set_fheight(int height){
+    fish_height = height;
 }
 
 //Function to return the current x attribute of the fish
@@ -53,15 +57,15 @@ int brain::getY(){
 
 //Function to change the x attribute of the fish
 void brain::setX(int new_x){
-    if (new_x < 0) x_att = 0;
-    else if (new_x > max_width) x_att = max_width;
+    if (new_x < 10) x_att = 10;
+    else if (new_x > max_width-fish_width-10) x_att = max_width-fish_width-10;
     else x_att = new_x;
 }
 
 //Function to change the y attribute of the fish
 void brain::setY(int new_y){
-    if (new_y < 0) y_att = 0;
-    else if (new_y > max_height) y_att = max_height;
+    if (new_y < 10) y_att = 10;
+    else if (new_y > max_height-fish_height-100) y_att = max_height-fish_height-100;
     else y_att = new_y;
 }
 
