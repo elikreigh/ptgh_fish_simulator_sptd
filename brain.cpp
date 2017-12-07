@@ -65,48 +65,39 @@ void brain::setY(int new_y){
     else y_att = new_y;
 }
 
-//Function to move the fish straight left
-void brain::moveLeft(){
-    setX(x_att - 1);
-}
-
-//Functino to move the fish straight right
-void brain::moveRight(){
-    setX(x_att + 1);
-}
-
-//Function to move the fish straight up
-void brain::moveUp(){
-    setY(y_att - 1);
-}
-
-//Function to move the fish sraight down
-void brain::moveDown(){
-    setY(y_att + 1);
-}
-
-//Function to move the fish diagonally up and right
-void brain::moveUpRight(){
-    setX(x_att + 1);
-    setY(y_att - 1);
-}
-
-//Function to move the fish diagonally up and left
-void brain::moveUpLeft(){
-    setX(x_att - 1);
-    setY(y_att - 1);
-}
-
-//Function to move the fish diagonally down and right
-void brain::moveDownRight(){
-    setX(x_att + 1);
-    setY(y_att + 1);
-}
-
-//Function to move the fush diagonally down and left
-void brain::moveDownLeft(){
-    setX(x_att - 1);
-    setY(y_att + 1);
+void brain::move(Move_Type dir){
+    switch(dir){
+        case(Up):
+            setY(y_att - 1);
+            break;
+        case(Down):
+            setY(y_att + 1);
+            break;
+        case(Left):
+            setX(x_att - 1);
+            break;
+        case(Right):
+            setX(x_att + 1);
+            break;
+        case(UpLeft):
+            setX(x_att - 1);
+            setY(y_att - 1);
+            break;
+        case(UpRight):
+            setX(x_att + 1);
+            setY(y_att - 1);
+            break;
+        case(DownLeft):
+            setX(x_att - 1);
+            setY(y_att + 1);
+            break;
+        case(DownRight):
+            setX(x_att + 1);
+            setY(y_att + 1);
+            break;
+        default:
+            currentState = Idle;
+    }
 }
 
 //Function to choose the next state of the fish
@@ -215,34 +206,7 @@ void brain::decision(){
             hunger++;
             driver = rand() % 30;
             direction = moveTypeState(driver);
-            switch(direction){
-                case(Up):
-                    moveUp();
-                    break;
-                case(Down):
-                    moveDown();
-                    break;
-                case(Left):
-                    moveLeft();
-                    break;
-                case(Right):
-                    moveRight();
-                    break;
-                case(UpLeft):
-                    moveUpLeft();
-                    break;
-                case(UpRight):
-                    moveUpRight();
-                    break;
-                case(DownLeft):
-                    moveDownLeft();
-                    break;
-                case(DownRight):
-                    moveDownRight();
-                    break;
-                default:
-                    currentState = Idle;
-            }
+            move(direction);
             break;
         case(Feed):
             isFood = false;
@@ -275,4 +239,8 @@ int brain::getRight(){
 
 Move_State brain::getState(){
     return currentState;
+}
+
+Move_Type brain::getDirection(){
+    return direction;
 }

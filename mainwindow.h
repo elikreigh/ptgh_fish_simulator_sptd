@@ -32,6 +32,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     Fish *mainFish;
+    int pile;
 };
 
 #endif // MAINWINDOW_H

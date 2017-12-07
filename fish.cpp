@@ -9,6 +9,17 @@ Fish::Fish(int window_width, int window_height){
     f_brain = new brain(ui_fish->x(),ui_fish->y(),window_width,window_height,ui_fish->width(),ui_fish->height());
 }
 
+Fish::Fish(Fish *newFish){
+    this->face_left = true;
+    sprite_index = 0;
+    f_brain = new brain(newFish->get_brain());
+    set_left(newFish->get_face_left());
+}
+
+brain Fish::get_brain(){
+    return f_brain;
+}
+
 /*Accessors for location and state*/
 int Fish::get_x(){
     return ui_fish->x();
@@ -33,13 +44,19 @@ void Fish::set_left(bool lft){
 
 void Fish::swim(){
     cycle_sprite();
-    f_brain.decision();
-    ui_fish->move(f_brain.getX(), f_brain.getY());
+    f_brain->decision();
+    ui_fish->move(f_brain->getX(), f_brain->getY());
+}
+
+void Fish::swim(Move_Type direction){
+    cycle_sprite();
+    f_brain->move(direction);
+    ui_fish->move(f_brain->getX(), f_brain->getY());
 }
 
 /*Idle Animation*/
 void Fish::bob(){
-    if(f_brain.getState() == Idle){
+    if(f_brain->getState() == Idle){
         ui_fish->move(ui_fish->x(), ui_fish->y());
     }
 }

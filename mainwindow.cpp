@@ -9,6 +9,7 @@
 #include <QProcess>
 #include <iostream>
 #include <string>
+#include "brain.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -41,7 +42,7 @@ MainWindow::~MainWindow(){
 
 void MainWindow::move_fish(){
     //Placeholder bouncing
-    if(ui->stackedWidget->currentIndex() == 1 && mainFish->get_face_left()){
+    /*if(ui->stackedWidget->currentIndex() == 1 && mainFish->get_face_left()){
         mainFish->swim();
         if(mainFish->get_x() < 10){
             mainFish->set_left(false);
@@ -52,6 +53,32 @@ void MainWindow::move_fish(){
         if(mainFish->get_x() > 1060){
             mainFish->set_left(true);
         }
+    }*/
+    if(ui->stackedWidget->currentIndex() == 1){
+        Fish *test_fish = new Fish(mainFish);
+        enum Move_Type direction;
+        test_fish->swim();
+        direction = test_fish->get_brain().getDirection();
+        if(direction == Left || direction == UpLeft || direction == DownLeft){
+            test_fish->set_left(true);
+        }
+        else if(direction == Right || direction == UpRight || direction == DownRight){
+            test_fish->set_left(false);
+        } else {
+            test_fish->set_left(test_fish->get_face_left());
+        }
+        if(!((test_fish->get_x() == pile) || (test_fish->get_y() == pile))){
+            if(direction == Left || direction == UpLeft || direction == DownLeft){
+                mainFish->set_left(true);
+            }
+            else if(direction == Right || direction == UpRight || direction == DownRight){
+                mainFish->set_left(false);
+            } else {
+                mainFish->set_left(mainFish->get_face_left());
+            }
+            mainFish->swim(direction);
+        }
+        delete test_fish;
     }
 }
 

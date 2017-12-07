@@ -16,7 +16,9 @@ public:
     Move_State moveState(int input);
     Move_Type moveTypeState(int input);
     Move_State getState();
+    Move_Type getDirection();
     void decision();
+    void move(Move_Type dir);
     void moveLeft();
     void moveRight();
     void moveUp();
