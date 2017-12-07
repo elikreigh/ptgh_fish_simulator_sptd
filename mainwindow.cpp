@@ -26,6 +26,9 @@ MainWindow::MainWindow(QWidget *parent) :
     //assinging label to fish & Pixmap to label
     mainFish->set_fish(findChild<QLabel*>("Fish"));
 
+    //Finish set up of fish brain
+    mainFish->brain_setup();
+
     //starting move events
     //anitimer cycles fish sprite, can be included with the moving animation
     QTimer *timer = new QTimer(this);

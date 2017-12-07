@@ -11,7 +11,7 @@ class brain
 {
 public:
     brain();
-    brain(int x, int y, int width, int height, int fwidth, int fheight);
+    brain(int width, int height);
     brain(brain *other);
     Move_State moveState(int input);
     Move_Type moveTypeState(int input);
@@ -29,6 +29,8 @@ public:
     void moveDownLeft();
     void setX(int new_x);
     void setY(int new_y);
+    void set_fwidth(int width);
+    void set_fheight(int height);
     int getX();
     int getY();
     int getTop();

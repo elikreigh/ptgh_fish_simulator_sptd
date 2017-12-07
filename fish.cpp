@@ -6,7 +6,7 @@
 Fish::Fish(int window_width, int window_height){
     this->face_left = true;
     sprite_index = 0;
-    f_brain = new brain(ui_fish->x(),ui_fish->y(),window_width,window_height,ui_fish->width(),ui_fish->height());
+    f_brain = new brain(window_width,window_height);
 }
 
 Fish::Fish(Fish *newFish){
@@ -35,6 +35,13 @@ bool Fish::get_face_left(){
 
 void Fish::set_fish(QLabel *fish){
     ui_fish = fish;
+}
+
+void Fish::brain_setup(){
+    f_brain->setX(ui_fish->x());
+    f_brain->setY(ui_fish->y());
+    f_brain->set_fwidth(ui_fish->width());
+    f_brain->set_fheight(ui_fish->height());
 }
 
 /*Mutator for state*/

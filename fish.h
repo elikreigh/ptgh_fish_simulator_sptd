@@ -24,6 +24,7 @@ public:
     bool get_face_left();
     void set_left(bool lft);
     brain get_brain();
+    void brain_setup();
 
 private:
     QLabel *ui_fish;
