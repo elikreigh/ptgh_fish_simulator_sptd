@@ -3,9 +3,21 @@
 //Date: 12/1/2017
 #include "fish.h"
 
-Fish::Fish(){
-    left = true;
+Fish::Fish(int window_width, int window_height){
+    this->face_left = true;
     sprite_index = 0;
+    f_brain = new brain(ui_fish->x(),ui_fish->y(),window_width,window_height,ui_fish->width(),ui_fish->height());
+}
+
+Fish::Fish(Fish *newFish){
+    this->face_left = true;
+    sprite_index = 0;
+    f_brain = new brain(newFish->get_brain());
+    set_left(newFish->get_face_left());
+}
+
+brain Fish::get_brain(){
+    return f_brain;
 }
 
 /*Accessors for location and state*/
@@ -17,8 +29,8 @@ int Fish::get_y(){
     return ui_fish->y();
 }
 
-bool Fish::get_left(){
-    return left;
+bool Fish::get_face_left(){
+    return face_left;
 }
 
 void Fish::set_fish(QLabel *fish){
@@ -27,17 +39,26 @@ void Fish::set_fish(QLabel *fish){
 
 /*Mutator for state*/
 void Fish::set_left(bool lft){
-    left = lft;
+    face_left = lft;
 }
 
-void Fish::swim(int destX, int destY){
+void Fish::swim(){
     cycle_sprite();
-    ui_fish->setGeometry(ui_fish->x()+destX, ui_fish->y()+destY, ui_fish->width(), ui_fish->height());
+    f_brain->decision();
+    ui_fish->move(f_brain->getX(), f_brain->getY());
+}
+
+void Fish::swim(Move_Type direction){
+    cycle_sprite();
+    f_brain->move(direction);
+    ui_fish->move(f_brain->getX(), f_brain->getY());
 }
 
 /*Idle Animation*/
 void Fish::bob(){
-    ui_fish->move(ui_fish->x(), ui_fish->y());
+    if(f_brain->getState() == Idle){
+        ui_fish->move(ui_fish->x(), ui_fish->y());
+    }
 }
 
 void Fish::origin(){

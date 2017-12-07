@@ -98,85 +98,150 @@ font: 75 36pt &quot;MS Serif&quot;;</string>
        <string>PTGH: FISH SIMULATOR 2018</string>
       </property>
      </widget>
+     <widget class="QLabel" name="spash_floater1">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>200</y>
+        <width>31</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: none;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>../Resources/BubbleBasic.png</pixmap>
+      </property>
+     </widget>
+     <widget class="QLabel" name="spash_floater2">
+      <property name="geometry">
+       <rect>
+        <x>1090</x>
+        <y>450</y>
+        <width>31</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: none;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>../Resources/BubbleBasic.png</pixmap>
+      </property>
+     </widget>
+     <widget class="QLabel" name="spash_floater3">
+      <property name="geometry">
+       <rect>
+        <x>1190</x>
+        <y>230</y>
+        <width>31</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: none;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>../Resources/BubbleBasic.png</pixmap>
+      </property>
+     </widget>
+     <widget class="QLabel" name="spash_floater4">
+      <property name="geometry">
+       <rect>
+        <x>500</x>
+        <y>550</y>
+        <width>31</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: none;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>../Resources/BubbleBasic.png</pixmap>
+      </property>
+     </widget>
+     <widget class="QLabel" name="spash_floater5">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>370</y>
+        <width>31</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: none;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>../Resources/BubbleBasic.png</pixmap>
+      </property>
+     </widget>
+     <widget class="QLabel" name="spash_floater6">
+      <property name="geometry">
+       <rect>
+        <x>910</x>
+        <y>130</y>
+        <width>31</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: none;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>../Resources/BubbleBasic.png</pixmap>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="tank_UI">
      <property name="styleSheet">
       <string notr="true">backgroung-color: none;</string>
      </property>
-     <widget class="QPushButton" name="kill_button">
-      <property name="geometry">
-       <rect>
-        <x>1180</x>
-        <y>70</y>
-        <width>75</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-		stop:0 white, stop:1 grey);
-font: 75 auto &quot;MS Serif&quot;;</string>
-      </property>
-      <property name="text">
-       <string>Kill Fish</string>
-      </property>
-     </widget>
-     <widget class="QGraphicsView" name="GameWindow">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>1151</width>
-        <height>621</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: none;</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="to_settings_button">
-      <property name="geometry">
-       <rect>
-        <x>1180</x>
-        <y>150</y>
-        <width>75</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-		stop:0 white, stop:1 grey);
-font: 75 auto &quot;MS Serif&quot;;</string>
-      </property>
-      <property name="text">
-       <string>Settings</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="feeding_button">
-      <property name="geometry">
-       <rect>
-        <x>1180</x>
-        <y>30</y>
-        <width>75</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-		stop:0 white, stop:1 grey);
-font: 75 auto &quot;MS Serif&quot;;</string>
-      </property>
-      <property name="text">
-       <string>Feeding</string>
-      </property>
-     </widget>
      <widget class="QLabel" name="Fish">
       <property name="geometry">
        <rect>
-        <x>950</x>
-        <y>300</y>
-        <width>91</width>
-        <height>51</height>
+        <x>930</x>
+        <y>280</y>
+        <width>111</width>
+        <height>71</height>
        </rect>
       </property>
       <property name="mouseTracking">
@@ -201,24 +266,227 @@ font: 75 auto &quot;MS Serif&quot;;</string>
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QPushButton" name="exit_button">
+     <widget class="QFrame" name="frame">
       <property name="geometry">
        <rect>
-        <x>1180</x>
-        <y>540</y>
-        <width>75</width>
-        <height>23</height>
+        <x>1150</x>
+        <y>0</y>
+        <width>131</width>
+        <height>621</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: qlineargradient(x1:0, y1:0, x2:3, y2:1,
+		stop:0 white, stop:1 grey);
+</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QPushButton" name="feeding_button">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>30</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+		stop:0 white, stop:1 grey);
+font: 75 auto &quot;MS Serif&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Feeding</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="kill_button">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>70</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+		stop:0 white, stop:1 grey);
+font: 75 auto &quot;MS Serif&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Kill Fish</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="to_settings_button">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>130</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+		stop:0 white, stop:1 grey);
+font: 75 auto &quot;MS Serif&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Settings</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="exit_button">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>530</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+		stop:0 white, stop:1 grey);
+font: 75 auto &quot;MS Serif&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Exit</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QLabel" name="bubbles1">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>470</y>
+        <width>71</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: none;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>../Resources/BubblesFrame1.png</pixmap>
+      </property>
+     </widget>
+     <widget class="QLabel" name="bubbles2">
+      <property name="geometry">
+       <rect>
+        <x>1070</x>
+        <y>450</y>
+        <width>71</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: none;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>../Resources/BubblesFrame1.png</pixmap>
+      </property>
+     </widget>
+     <widget class="QLabel" name="single_bubble1">
+      <property name="geometry">
+       <rect>
+        <x>230</x>
+        <y>500</y>
+        <width>31</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: none;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>../Resources/BubbleBasic.png</pixmap>
+      </property>
+     </widget>
+     <widget class="QLabel" name="food1">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>420</x>
+        <y>0</y>
+        <width>51</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: none;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>../Resources/FishFood1.png</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QFrame" name="sand">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>560</y>
+        <width>1151</width>
+        <height>61</height>
        </rect>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-		stop:0 white, stop:1 grey);
-font: 75 auto &quot;MS Serif&quot;;</string>
+				stop:0 yellow, stop:1 white);</string>
       </property>
-      <property name="text">
-       <string>Exit</string>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
       </property>
      </widget>
+     <widget class="QGraphicsView" name="GameWindow">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>1151</width>
+        <height>621</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+		stop:0 white, stop:1 blue);
+</string>
+      </property>
+     </widget>
+     <zorder>GameWindow</zorder>
+     <zorder>sand</zorder>
+     <zorder>frame</zorder>
+     <zorder>bubbles1</zorder>
+     <zorder>bubbles2</zorder>
+     <zorder>single_bubble1</zorder>
+     <zorder>food1</zorder>
+     <zorder>Fish</zorder>
     </widget>
     <widget class="QWidget" name="setting_UI">
      <widget class="QPushButton" name="to_tank_button">
@@ -354,6 +622,10 @@ font: 75 auto &quot;MS Serif&quot;;</string>
       </property>
       <property name="font">
        <font>
+        <family>MS Serif</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
         <underline>false</underline>
         <strikeout>false</strikeout>
        </font>
@@ -557,6 +829,135 @@ font: 75 auto &quot;MS Serif&quot;;</string>
       </property>
       <property name="wordWrap">
        <bool>false</bool>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="credit_UI">
+     <widget class="QLabel" name="label_7">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>20</y>
+        <width>1281</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>MS Serif</family>
+        <pointsize>18</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+        <underline>true</underline>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: none; text-decoration: underline; </string>
+      </property>
+      <property name="text">
+       <string>Credits</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_8">
+      <property name="geometry">
+       <rect>
+        <x>340</x>
+        <y>100</y>
+        <width>601</width>
+        <height>321</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>MS Serif</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: none;</string>
+      </property>
+      <property name="text">
+       <string>We would firstly like the thank those involved directly with the creation of this
+wonderful simulation of a house hold goldfish.
+
+Specifically, we thank Matthew Westjohn for his involvment with the brain of the
+fish, we thank Adam Griswold for his involvment with the visual UI and
+semi-functional animations of the interface and finally we thank Eli Kreigh for his
+involvment with the music and general sound effects.
+
+Finally, we would like to thank all of the individuals participating in the viewing
+of our simulation</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="credits_to_settings_button">
+      <property name="geometry">
+       <rect>
+        <x>600</x>
+        <y>540</y>
+        <width>101</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+		stop:0 white, stop:1 grey);
+font: 75 auto &quot;MS Serif&quot;;</string>
+      </property>
+      <property name="text">
+       <string>Return To Menu</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="controls_UI">
+     <widget class="QPushButton" name="controls_to_settings_button">
+      <property name="geometry">
+       <rect>
+        <x>600</x>
+        <y>540</y>
+        <width>101</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+		stop:0 white, stop:1 grey);
+font: 75 auto &quot;MS Serif&quot;;</string>
+      </property>
+      <property name="text">
+       <string>Return To Menu</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_9">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>20</y>
+        <width>1281</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>MS Serif</family>
+        <pointsize>18</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+        <underline>true</underline>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: none; text-decoration: underline; </string>
+      </property>
+      <property name="text">
+       <string>Controls</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </widget>
