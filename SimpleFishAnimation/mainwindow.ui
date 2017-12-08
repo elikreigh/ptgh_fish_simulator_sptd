@@ -35,7 +35,7 @@
 </string>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>4</number>
     </property>
     <widget class="QWidget" name="startup_UI">
      <widget class="QPushButton" name="start_button">
@@ -233,7 +233,7 @@ font: 75 36pt &quot;MS Serif&quot;;</string>
     </widget>
     <widget class="QWidget" name="tank_UI">
      <property name="styleSheet">
-      <string notr="true">backgroung-color: none;</string>
+      <string notr="true">background-color: none;</string>
      </property>
      <widget class="QLabel" name="Fish">
       <property name="geometry">
@@ -425,7 +425,7 @@ font: 75 auto &quot;MS Serif&quot;;</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>420</x>
+        <x>790</x>
         <y>0</y>
         <width>51</width>
         <height>41</height>
@@ -520,16 +520,33 @@ font: 75 auto &quot;MS Serif&quot;;</string>
        <pixmap>../Resources/Pillar.png</pixmap>
       </property>
      </widget>
+     <widget class="QPushButton" name="tank_button">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>1151</width>
+        <height>621</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: transparent;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
      <zorder>GameWindow</zorder>
      <zorder>sand</zorder>
      <zorder>frame</zorder>
      <zorder>bubbles1</zorder>
      <zorder>bubbles2</zorder>
      <zorder>single_bubble1</zorder>
-     <zorder>food1</zorder>
      <zorder>Fish</zorder>
      <zorder>pillar2</zorder>
      <zorder>pillar1</zorder>
+     <zorder>food1</zorder>
+     <zorder>tank_button</zorder>
     </widget>
     <widget class="QWidget" name="setting_UI">
      <widget class="QPushButton" name="to_tank_button">
@@ -701,8 +718,17 @@ font: 75 auto &quot;MS Serif&quot;;</string>
       <property name="styleSheet">
        <string notr="true">background: none;</string>
       </property>
+      <property name="sliderPosition">
+       <number>99</number>
+      </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="tickPosition">
+       <enum>QSlider::NoTicks</enum>
+      </property>
+      <property name="tickInterval">
+       <number>0</number>
       </property>
      </widget>
      <widget class="QLabel" name="label_4">
@@ -750,128 +776,11 @@ font: 75 auto &quot;MS Serif&quot;;</string>
       <property name="styleSheet">
        <string notr="true">background: none;</string>
       </property>
+      <property name="sliderPosition">
+       <number>99</number>
+      </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="fullscreen_check">
-      <property name="geometry">
-       <rect>
-        <x>630</x>
-        <y>355</y>
-        <width>61</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background: none;</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="resolution_selector">
-      <property name="geometry">
-       <rect>
-        <x>630</x>
-        <y>310</y>
-        <width>91</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background: none;</string>
-      </property>
-      <item>
-       <property name="text">
-        <string>640 x 480</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>800 x 600</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>1280 x 720</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>1920 x 1080</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>3440 x 1440</string>
-       </property>
-      </item>
-     </widget>
-     <widget class="QLabel" name="label_5">
-      <property name="geometry">
-       <rect>
-        <x>520</x>
-        <y>350</y>
-        <width>91</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>MS Serif</family>
-        <pointsize>12</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: none; text-decoration: none;</string>
-      </property>
-      <property name="text">
-       <string>Full Screen:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-      <property name="wordWrap">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_6">
-      <property name="geometry">
-       <rect>
-        <x>530</x>
-        <y>310</y>
-        <width>81</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>MS Serif</family>
-        <pointsize>12</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: none; text-decoration: none;</string>
-      </property>
-      <property name="text">
-       <string>Resolution:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-      <property name="wordWrap">
-       <bool>false</bool>
       </property>
      </widget>
     </widget>
@@ -1003,8 +912,37 @@ font: 75 auto &quot;MS Serif&quot;;</string>
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
+     <widget class="QLabel" name="label_10">
+      <property name="geometry">
+       <rect>
+        <x>340</x>
+        <y>150</y>
+        <width>601</width>
+        <height>131</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>MS Serif</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: none;</string>
+      </property>
+      <property name="text">
+       <string>1. Press the feed button to feed
+2. Press the kill button to restart window
+3. Press the exit button to close window
+4. Observe</string>
+      </property>
+     </widget>
     </widget>
    </widget>
+   <zorder>stackedWidget</zorder>
+   <zorder>tank_button</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

@@ -8,6 +8,7 @@
 #include <QLabel>
 #include "brain.h"
 #include "pillar.h"
+#include "fishfood.h"
 
 class Fish
 {
@@ -28,6 +29,7 @@ public:
     brain get_brain();
     void brain_setup();
     bool no_over_lap(Pillar* pile[2]);
+    bool eat_food(FishFood* food);
 
 private:
     QLabel *ui_fish;

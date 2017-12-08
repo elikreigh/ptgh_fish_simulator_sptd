@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT       += multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -15,21 +16,29 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     fish.cpp \
-    brain.cpp \
     bubbles.cpp \
-    fishfood.cpp \
     floatingbubbles.cpp \
+    fishfood.cpp \
+    brain.cpp \
     pillar.cpp
 
 HEADERS  += mainwindow.h \
     fish.h \
-    brain.h \
     bubbles.h \
-    fishfood.h \
     floatingbubbles.h \
+    fishfood.h \
+    brain.h \
     pillar.h
 
 FORMS    += mainwindow.ui
 
 QT += uitools
+
+RESOURCES += \
+    sound.qrc
+
+DISTFILES += \
+    click.mp3 \
+    shaker.mp3 \
+    tankSound.mp3
 

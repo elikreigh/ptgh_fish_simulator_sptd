@@ -1,23 +1,35 @@
 //Adam Griswold : Version 1.0
-//Purpose: Sets up initial widget location and button triggers and page transitions
-//         Basic timer is set up for occasional fish movement
-//Date: 12/1/2017
+//Adam Griswold : Version 1.5
+//Purpose: Version 1.0 : 12/1/2017 : Sets up initial widget location and button triggers and page transitions. Basic timer is set up for occasional fish movement
+//         Version 1.5 : 12/4/2017 : Added classes for Bubbles, Floating Bubbles, Food and more UI interfaces
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QTimer>
 #include <QApplication>
 #include <QProcess>
-#include <iostream>
-#include <string>
+//#include <iostream>
+//#include <string>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow){
-
     //setting up window with form
     ui->setupUi(this);
     ui->stackedWidget->setCurrentIndex(0);
     setWindowTitle(tr("TankDisplay"));
+
+    //background bubbling sound
+    sound_fx = new QMediaPlayer();
+    sound_music = new QMediaPlayer();
+
+    sound_fx->setMedia(QUrl("qrc:/sound/click.mp3"));
+
+    QMediaPlaylist *playlist = new QMediaPlaylist();
+    playlist->addMedia(QUrl("qrc:/sound/tankSound.mp3"));
+    playlist->setPlaybackMode(QMediaPlaylist::Loop);
+
+    sound_music->setPlaylist(playlist);
+    sound_music->play();
 
     //Bubbles for splash screen
     splash_floater1 = new FloatingBubbles();
@@ -36,6 +48,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     pillar1 = new Pillar();
     pillar2 = new Pillar();
+
+    tank = new QPushButton();
 
     //assigning label to bubbles for splash screen
     splash_floater1->set_bubble(findChild<QLabel*>("spash_floater1"));
@@ -56,6 +70,9 @@ MainWindow::MainWindow(QWidget *parent) :
     pillar2->set_pillar(findChild<QLabel*>("pillar2"));
 
     mainFish->brain_setup();
+
+    tank = findChild<QPushButton*>("tank_button");
+    tank->setStyleSheet("background-color: transparent; ");
 
     //setting up pile
     pile[0] = pillar1;
@@ -142,12 +159,19 @@ void MainWindow::movement_logic(){
                 }*/
                 mainFish->get_brain().set_direction(direction);
                 mainFish->swim(direction);
+                if(mainFish->eat_food(food)){
+                    food->eaten();
+                    sound_fx->setMedia(QUrl("qrc:/sound/munch.mp3"));
+                    sound_fx->play();
+                }
             }
             test_fish->~Fish();
             //mainFish->swim(DownRight);
         }
         single_bubble1->float_up();
-        food->sink();
+        if(food->no_over_lap(pile)){
+            food->sink();
+        }
     }
 }
 
@@ -192,53 +216,82 @@ void MainWindow::next_frame(){
 
 /*Startup Screen Inputs*/
 void MainWindow::on_start_button_clicked(){
+    sound_fx->setMedia(QUrl("qrc:/sound/click.mp3"));
+    sound_fx->play();
     ui->stackedWidget->setCurrentIndex(1);
 }
 
 /*Main Screen Inputs*/
 void MainWindow::on_to_settings_button_clicked(){
+    sound_fx->setMedia(QUrl("qrc:/sound/click.mp3"));
+    sound_fx->play();
     ui->stackedWidget->setCurrentIndex(2);
 }
 
 void MainWindow::on_feeding_button_clicked(){
+    sound_fx->setMedia(QUrl("qrc:/sound/click.mp3"));
+    sound_fx->play();
+    sound_fx->setMedia(QUrl("qrc:/sound/shaker.mp3"));
+    sound_fx->play();
     /*QLabel *new_food = new QLabel("food1", ui->GameWindow, 0);
     new_food->setGeometry(100,100,100,100);*/
     food->show_food();
 }
 
 void MainWindow::on_kill_button_clicked(){
+    sound_fx->setMedia(QUrl("qrc:/sound/click.mp3"));
+    sound_fx->play();
     qApp->quit();
     QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
 }
 
+void MainWindow::on_tank_button_clicked(){
+    sound_fx->setMedia(QUrl("qrc:/sound/tap.mp3"));
+    sound_fx->play();
+}
+
 /*Settings Screen Inputs*/
 void MainWindow::on_to_tank_button_clicked(){
+    sound_fx->setMedia(QUrl("qrc:/sound/click.mp3"));
+    sound_fx->play();
     ui->stackedWidget->setCurrentIndex(1);
 }
 void MainWindow::on_credits_button_clicked(){
+    sound_fx->setMedia(QUrl("qrc:/sound/click.mp3"));
+    sound_fx->play();
     ui->stackedWidget->setCurrentIndex(3);
 
 }
 void MainWindow::on_controls_button_clicked(){
+    sound_fx->setMedia(QUrl("qrc:/sound/click.mp3"));
+    sound_fx->play();
     ui->stackedWidget->setCurrentIndex(4);
 
 }
 /*Credits Screen Inputs*/
 void MainWindow::on_credits_to_settings_button_clicked(){
+    sound_fx->setMedia(QUrl("qrc:/sound/click.mp3"));
+    sound_fx->play();
     ui->stackedWidget->setCurrentIndex(2);
 }
 /*Contorls Screen Inputs*/
 void MainWindow::on_controls_to_settings_button_clicked(){
+    sound_fx->setMedia(QUrl("qrc:/sound/click.mp3"));
+    sound_fx->play();
     ui->stackedWidget->setCurrentIndex(2);
 }
 
 //position numbers: 0 - 99
-void MainWindow::on_music_slider_sliderMoved(int position)
-{
+void MainWindow::on_music_slider_sliderMoved(int position){
+    sound_music->setVolume((position));
     /*QLabel *tag = findChild<QLabel*>("label_3");
     QString s;
     s.setNum(position);
     tag->setText(s);*/
+}
+
+void MainWindow::on_sfx_slider_sliderMoved(int position){
+    sound_fx->setVolume((position));
 }
 
 /*General Window Inputs*/
@@ -247,17 +300,17 @@ void MainWindow::on_exit_button_clicked(){
 }
 
 void MainWindow::spawn_bubbles(){
-    if(findChild<QLabel*>("spash_floater1") == 0){
+    /*if(findChild<QLabel*>("spash_floater1") == 0){
         QLabel *new_bubble = new QLabel(ui->centralWidget, 0);
         new_bubble->setGeometry(rand()%1000, 600, 31, 31);
-        new_bubble->setPixmap(QPixmap("C:/Users/agris/OneDrive/Documents/Resources/BubbleBasic1.png"));
+        new_bubble->setPixmap(QPixmap("../Resources/BubbleBasic1.png"));
         new_bubble->setObjectName("splash_floater1");
         splash_floater1->set_bubble(findChild<QLabel*>("spash_floater1"));
     }
     if(findChild<QLabel*>("spash_floater2") == 0){
         QLabel *new_bubble = new QLabel(ui->centralWidget, 0);
         new_bubble->setGeometry(rand()%1000, 600, 31, 31);
-        new_bubble->setPixmap(QPixmap("C:/Users/agris/OneDrive/Documents/Resources/BubbleBasic1.png"));
+        new_bubble->setPixmap(QPixmap("../Resources/BubbleBasic1.png"));
         new_bubble->setObjectName("splash_floater2");
         splash_floater2->set_bubble(findChild<QLabel*>("spash_floater2"));
     }
@@ -265,28 +318,29 @@ void MainWindow::spawn_bubbles(){
         QLabel *new_bubble = new QLabel(ui->centralWidget, 0);
         new_bubble->setObjectName(QString("splash_floater3"));
         new_bubble->setGeometry(rand()%1000, 600, 31, 31);
-        new_bubble->setPixmap(QPixmap("C:/Users/agris/OneDrive/Documents/Resources/BubbleBasic1.png"));
+        new_bubble->setPixmap(QPixmap("../Resources/BubbleBasic1.png"));
         splash_floater3->set_bubble(new_bubble);
     }
     if(findChild<QLabel*>("spash_floater4") == 0){
         QLabel *new_bubble = new QLabel(ui->centralWidget, 0);
         new_bubble->setGeometry(rand()%1000, 600, 31, 31);
-        new_bubble->setPixmap(QPixmap("C:/Users/agris/OneDrive/Documents/Resources/BubbleBasic1.png"));
+        new_bubble->setPixmap(QPixmap("../Resources/BubbleBasic1.png"));
         new_bubble->setObjectName("splash_floater4");
         splash_floater4->set_bubble(findChild<QLabel*>("spash_floater4"));
     }
     if(findChild<QLabel*>("spash_floater5") == 0){
         QLabel *new_bubble = new QLabel(ui->centralWidget, 0);
         new_bubble->setGeometry(rand()%1000, 600, 31, 31);
-        new_bubble->setPixmap(QPixmap("C:/Users/agris/OneDrive/Documents/Resources/BubbleBasic1.png"));
+        new_bubble->setPixmap(QPixmap("../Resources/BubbleBasic1.png"));
         new_bubble->setObjectName("splash_floater5");
         splash_floater5->set_bubble(findChild<QLabel*>("spash_floater5"));
     }
     if(findChild<QLabel*>("spash_floater6") == 0){
         QLabel *new_bubble = new QLabel(ui->centralWidget, 0);
         new_bubble->setGeometry(rand()%1000, 600, 31, 31);
-        new_bubble->setPixmap(QPixmap("C:/Users/agris/OneDrive/Documents/Resources/BubbleBasic1.png"));
+        new_bubble->setPixmap(QPixmap("../Resources/BubbleBasic1.png"));
         new_bubble->setObjectName("splash_floater6");
         splash_floater6->set_bubble(findChild<QLabel*>("spash_floater6"));
-    }
+    }*/
 }
+

@@ -7,7 +7,6 @@ Fish::Fish(int window_width, int window_height){
     this->face_left = true;
     sprite_index = 0;
     f_brain = new brain(window_width,window_height);
-    counter = 0;
 }
 
 Fish::Fish(Fish *newFish){
@@ -37,6 +36,7 @@ bool Fish::get_face_left(){
 
 void Fish::set_fish(QLabel *fish){
     ui_fish = fish;
+    origin();
 }
 
 void Fish::brain_setup(){
@@ -105,8 +105,22 @@ bool Fish::no_over_lap(Pillar *pile[2]){
         int pile_right = pile[i]->get_right();
         int pile_left = pile[i]->get_left();
         int pile_top = pile[i]->get_top();
-        if((f_brain->getLeft() == pile_right && f_brain->getBottom() >= pile_top) || (f_brain->getRight() == pile_left && f_brain->getBottom() >= pile_top) || (f_brain->getBottom() == pile_top && f_brain->getRight() <= pile_left && f_brain->getLeft() >= pile_right)){
+        if((f_brain->getLeft() == pile_right && f_brain->getBottom() >= pile_top) || (f_brain->getRight() == pile_left && f_brain->getBottom() >= pile_top) || (f_brain->getBottom() == pile_top && f_brain->getRight() >= pile_left && f_brain->getLeft() <= pile_right)){
             ans = false;
+        }
+    }
+    return ans;
+}
+
+bool Fish::eat_food(FishFood *food){
+    bool ans = false;
+    if(!food->getUI()->isHidden()){
+        int food_right = food->getRight();
+        int food_left = food->getLeft();
+        int food_top = food->getTop();
+        int food_bottom = food->getBottom();
+        if((f_brain->getLeft() <= (food_left+25) && f_brain->getLeft() >= (food_left-25)) && (f_brain->getBottom() <= (food_bottom+25) && f_brain->getBottom() >= (food_bottom-25))){
+            ans = true;
         }
     }
     return ans;
