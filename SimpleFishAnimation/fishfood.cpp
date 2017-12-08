@@ -3,22 +3,21 @@
 FishFood::FishFood()
 {
     sprite_index = 0;
-    speed = 0;
+    speed = 1;
 }
 
 void FishFood::sink(){
     if(!ui_fish_food->isHidden()){
         ui_fish_food->move(ui_fish_food->x(), ui_fish_food->y()+speed);
         if(check_height()){
-            speed = 0;
-            eaten();
+            speed=0;
         }
     }
 }
 
 void FishFood::set_food(QLabel *food){
     ui_fish_food = food;
-    hide_food();
+    ui_fish_food->hide();
 }
 
 void FishFood::cycle_sprite(){
@@ -53,43 +52,4 @@ void FishFood::hide_food(){
 
 void FishFood::show_food(){
     ui_fish_food->show();
-    speed = 1;
-}
-
-void FishFood::eaten(){
-    hide_food();
-    new_spawn();
-}
-
-void FishFood::new_spawn(){
-    ui_fish_food->move(rand()%900+100, rand()%10-30);
-}
-
-int FishFood::getLeft(){
-    return ui_fish_food->x();
-}
-
-int FishFood::getRight(){
-    return ui_fish_food->x()+ui_fish_food->width();
-}
-
-int FishFood::getBottom(){
-    return ui_fish_food->y()+ui_fish_food->height();
-}
-
-int FishFood::getTop(){
-    return ui_fish_food->y();
-}
-
-bool FishFood::no_over_lap(Pillar *pile[2]){
-    bool ans = true;
-    for(int i = 0; i < 2; i++){
-        int pile_right = pile[i]->get_right();
-        int pile_left = pile[i]->get_left();
-        int pile_top = pile[i]->get_top();
-        if((getLeft() == pile_right && getBottom() <= pile_top) || (getRight() == pile_left && getBottom() <= pile_top) || (getBottom() == pile_top && getRight() >= pile_left && getLeft() <= pile_right)){
-            ans = false;
-        }
-    }
-    return ans;
 }
