@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/sound">
+        <file>click.mp3</file>
+        <file>shaker.mp3</file>
+        <file>tankSound.mp3</file>
+        <file>munch.mp3</file>
+        <file>tap.mp3</file>
+    </qresource>
+</RCC>

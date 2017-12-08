@@ -19,6 +19,6 @@ void Pillar::set_pillar(QLabel *pillar){
     ui_pillar = pillar;
 }
 
-QLabel *Pillar::get_pillar(){
+QLabel* Pillar::get_pillar(){
     return ui_pillar;
 }

@@ -4,11 +4,14 @@
 #include <QMainWindow>
 #include <QtUiTools>
 #include <QVBoxLayout>
+#include <QMediaPlayer>
+#include <QMediaPlaylist>
 #include "fish.h"
 #include "bubbles.h"
 #include "floatingbubbles.h"
 #include "fishfood.h"
 #include "pillar.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -34,14 +37,19 @@ private slots:
     void on_credits_button_clicked();
     void on_controls_to_settings_button_clicked();
     void on_credits_to_settings_button_clicked();
+    void on_tank_button_clicked();
 
     void next_frame();
     void spawn_bubbles();
 
     void on_music_slider_sliderMoved(int position);
+    void on_sfx_slider_sliderMoved(int position);
 
 private:
     Ui::MainWindow *ui;
+    //Sound
+    QMediaPlayer *sound_fx;
+    QMediaPlayer *sound_music;
     //Bubbles for splash screen
     FloatingBubbles *splash_floater1;
     FloatingBubbles *splash_floater2;
@@ -57,6 +65,8 @@ private:
     FishFood *food;
     Pillar *pillar1;
     Pillar *pillar2;
+
+    QPushButton *tank;
     //label layout
     QVBoxLayout *main_layout;
 
