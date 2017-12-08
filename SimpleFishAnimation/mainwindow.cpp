@@ -150,10 +150,12 @@ void MainWindow::movement_logic(){
                 mainFish->swim(Up);
             }
             test_fish->~Fish();
-            mainFish->swim(DownRight);
+            mainFish->swim(Right);
         }
         single_bubble1->float_up();
-        food->sink();
+        if(food->no_over_lap(pile)){
+            food->sink();
+        }
     }
 }
 

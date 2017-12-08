@@ -35,6 +35,7 @@ bool Fish::get_face_left(){
 
 void Fish::set_fish(QLabel *fish){
     ui_fish = fish;
+    origin();
 }
 
 void Fish::brain_setup(){
@@ -102,7 +103,7 @@ bool Fish::no_over_lap(Pillar *pile[2]){
         int pile_right = pile[i]->get_right();
         int pile_left = pile[i]->get_left();
         int pile_top = pile[i]->get_top();
-        if((f_brain->getLeft() == pile_right) || (f_brain->getRight == pile_left) || (f_brain->getBottom() == pile_top)){
+        if((f_brain->getLeft() == pile_right && f_brain->getBottom() <= pile_top) || (f_brain->getRight() == pile_left && f_brain->getBottom() <= pile_top) || (f_brain->getBottom() == pile_top && f_brain->getRight() >= pile_left && f_brain->getLeft() <= pile_right)){
             ans = false;
         }
     }

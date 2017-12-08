@@ -425,8 +425,8 @@ font: 75 auto &quot;MS Serif&quot;;</string>
       </property>
       <property name="geometry">
        <rect>
-        <x>420</x>
-        <y>0</y>
+        <x>790</x>
+        <y>-10</y>
         <width>51</width>
         <height>41</height>
        </rect>
