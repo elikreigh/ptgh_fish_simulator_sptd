@@ -15,18 +15,18 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     fish.cpp \
-    bubbles.cpp \
-    floatingbubbles.cpp \
-    fishfood.cpp \
     brain.cpp \
+    bubbles.cpp \
+    fishfood.cpp \
+    floatingbubbles.cpp \
     pillar.cpp
 
 HEADERS  += mainwindow.h \
     fish.h \
-    bubbles.h \
-    floatingbubbles.h \
-    fishfood.h \
     brain.h \
+    bubbles.h \
+    fishfood.h \
+    floatingbubbles.h \
     pillar.h
 
 FORMS    += mainwindow.ui

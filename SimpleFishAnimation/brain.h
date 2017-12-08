@@ -1,23 +1,20 @@
 #ifndef BRAIN_H
 #define BRAIN_H
 
-enum  Move_State {Move, Idle, Feed};
-enum Move_Type {Up, Down, Left, Right, Forward, Back,
-              UpBack, UpForward, UpRight, UpLeft, UpBackRight, UpBackLeft, UpForwardRight,
-              UpForwardLeft, DownBack, DownForward, DownRight, DownLeft, DownBackRight,
-              DownBackLeft, DownForwardRight, DownForwardLeft, ForwardRight, ForwardLeft,
-              BackRight, BackLeft};
+enum  Move_State {Move, Idle};
+enum Move_Type {Up, Down, Left, Right, UpRight, UpLeft, DownRight, DownLeft};
 class brain
 {
 public:
     brain();
     brain(int width, int height);
     brain(brain *other);
-    Move_State moveState(int input);
-    Move_Type moveTypeState(int input);
+    void moveState(int input);
+    void moveTypeState(int input);
     Move_State getState();
     Move_Type getDirection();
-    void decision();
+    Move_Type decisionDirection();
+    void decisionState();
     void move(Move_Type dir);
     void moveLeft();
     void moveRight();
@@ -31,13 +28,14 @@ public:
     void setY(int new_y);
     void set_fwidth(int width);
     void set_fheight(int height);
+    void set_direction(Move_Type direction);
+    void set_state(Move_State state);
     int getX();
     int getY();
     int getTop();
     int getBottom();
     int getLeft();
     int getRight();
-    void set_direction(Move_Type dir);
 
 private:
     bool isFood;

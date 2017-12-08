@@ -6,6 +6,7 @@
 #include <QPixmap>
 #include <QImage>
 #include <cstdlib>
+#include <QLabel>
 
 class FloatingBubbles
 {

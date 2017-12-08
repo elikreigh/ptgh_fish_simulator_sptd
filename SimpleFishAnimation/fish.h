@@ -35,6 +35,7 @@ private:
     int sprite_index;
     bool face_left;
     brain *f_brain;
+    int counter;
 };
 
 #endif // FISH_H

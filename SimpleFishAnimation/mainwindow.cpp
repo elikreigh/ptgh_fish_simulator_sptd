@@ -37,8 +37,6 @@ MainWindow::MainWindow(QWidget *parent) :
     pillar1 = new Pillar();
     pillar2 = new Pillar();
 
-    tank = new QPushButton();
-
     //assigning label to bubbles for splash screen
     splash_floater1->set_bubble(findChild<QLabel*>("spash_floater1"));
     splash_floater2->set_bubble(findChild<QLabel*>("spash_floater2"));
@@ -58,9 +56,6 @@ MainWindow::MainWindow(QWidget *parent) :
     pillar2->set_pillar(findChild<QLabel*>("pillar2"));
 
     mainFish->brain_setup();
-
-    tank = findChild<QPushButton*>("tank_button");
-    tank->setStyleSheet("background-color: transparent; ");
 
     //setting up pile
     pile[0] = pillar1;
@@ -130,38 +125,29 @@ void MainWindow::movement_logic(){
         /*if(findChild<QLabel*>("single_bubble1") != 0){
             single_bubble1->float_up();
         }*/
-        if(ui->stackedWidget->currentIndex() == 1 && mainFish->get_brain().getState() == Move){
+        //mainFish->get_brain().decisionState();
+        if(ui->stackedWidget->currentIndex() == 1/* && mainFish->get_brain().getState() == Move*/){
             Fish *test_fish = new Fish(mainFish);
             enum Move_Type direction;
             test_fish->swim();
-            direction = test_fish->get_brain().getDirection();
-            if(direction == Left || direction == UpLeft || direction == DownLeft){
-                test_fish->set_left(true);
-            }
-            else if(direction == Right || direction == UpRight || direction == DownRight){
-                test_fish->set_left(false);
-            } else {
-                test_fish->set_left(test_fish->get_face_left());
-            }
+            direction = (test_fish->get_brain()).getDirection();
             if(test_fish->no_over_lap(pile)){
-                if(direction == Left || direction == UpLeft || direction == DownLeft){
+                /*if(direction == Left || direction == UpLeft || direction == DownLeft){
                     mainFish->set_left(true);
                 }
                 else if(direction == Right || direction == UpRight || direction == DownRight){
                     mainFish->set_left(false);
                 } else {
                     mainFish->set_left(mainFish->get_face_left());
-                }
+                }*/
                 mainFish->get_brain().set_direction(direction);
                 mainFish->swim(direction);
             }
             test_fish->~Fish();
-            //mainFish->swim(Down);
+            //mainFish->swim(DownRight);
         }
         single_bubble1->float_up();
-        if(food->no_over_lap(pile)){
-            food->sink();
-        }
+        food->sink();
     }
 }
 
@@ -223,10 +209,6 @@ void MainWindow::on_feeding_button_clicked(){
 void MainWindow::on_kill_button_clicked(){
     qApp->quit();
     QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
-}
-
-void MainWindow::on_tank_button_clicked(){
-    /*play sound here*/
 }
 
 /*Settings Screen Inputs*/

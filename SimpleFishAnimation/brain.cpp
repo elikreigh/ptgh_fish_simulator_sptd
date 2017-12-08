@@ -19,12 +19,18 @@ brain::brain(){
     max_height = 1000;
     fish_width = 100;
     fish_height = 50;
+    hunger = 0;
+    currentState = Idle;
+    direction = Up;
 }
 
 //Constructor to create a new fish based on parameters
 brain::brain(int width, int height){
     max_width = width-131;
     max_height = height;
+    hunger = 0;
+    currentState = Idle;
+    direction = Up;
 }
 
 //Constructor to create a new fish that is exactly like the old fish
@@ -35,6 +41,8 @@ brain::brain(brain *other){
     max_height = other->max_height;
     fish_height = other->fish_height;
     fish_width = other->fish_width;
+    currentState = other->getState();
+    direction = other->getDirection();
 }
 
 void brain::set_fwidth(int width){
@@ -72,12 +80,12 @@ void brain::setY(int new_y){
 void brain::move(Move_Type dir){
     switch(dir){
         case(Up):
-            setX(x_att);
             setY(y_att - 1);
+            setX(x_att);
             break;
         case(Down):
-            setX(x_att);
             setY(y_att + 1);
+            setX(x_att);
             break;
         case(Left):
             setX(x_att - 1);
@@ -103,40 +111,28 @@ void brain::move(Move_Type dir){
             setX(x_att + 1);
             setY(y_att + 1);
             break;
-        default:
-            currentState = Idle;
     }
 }
 
 //Function to choose the next state of the fish
-Move_State brain::moveState(int input){
-    typedef enum {S_Move, S_Idle, S_Feed} SMove;
+void brain::moveState(int input){
+    typedef enum {S_Move, S_Idle} SMove;
     static SMove s = S_Idle;
     //Create state transitions
-         if((s == S_Idle) && (isFood)) {s = S_Feed;}
-    else if((s == S_Move) && (isFood)) {s = S_Feed;}
-    else if((s == S_Idle) && (input == 0) && (!isFood)) {s = S_Idle;}
-    else if((s == S_Idle) && (input == 1) && (!isFood)) {s = S_Move;}
-    else if((s == S_Move) && (input == 0) && (!isFood)) {s = S_Idle;}
-    else if((s == S_Move) && (input == 1) && (!isFood)) {s = S_Move;}
-    else if((s == S_Feed) && (!isFood)) {s = S_Idle;}
-    else{s = s;}
+         if((input == 0)) {s = S_Idle;}
+    else if((input <= 7 && input > 0)) {s = S_Move;}
+    else{s = S_Move;}
     //Create output table
     switch(s){
-        case(S_Idle): return Idle;
-        case(S_Move): return Move;
-        case(S_Feed): return Feed;
+        case(S_Idle): set_state(Idle);
+        case(S_Move): set_state(Move);
     }
-    return Idle; //If state machine fails, fish goes to Idle state
+    set_state(Move); //If state machine fails, fish goes to Move state
 }
 
 //State machine to choose the next movement direction of the fish
-Move_Type brain::moveTypeState(int input){
-    typedef enum {S_Up, S_Down, S_Left, S_Right, S_Forward, S_Back,
-                  S_UpBack, S_UpForward, S_UpRight, S_UpLeft, S_UpBackRight, S_UpBackLeft, S_UpForwardRight,
-                  S_UpForwardLeft, S_DownBack, S_DownForward, S_DownRight, S_DownLeft, S_DownBackRight,
-                  S_DownBackLeft, S_DownForwardRight, S_DownForwardLeft, S_ForwardRight, S_ForwardLeft,
-                  S_BackRight, S_BackLeft} S_Move_Type;
+void brain::moveTypeState(int input){
+    typedef enum {S_Up, S_Down, S_Left, S_Right, S_UpRight, S_UpLeft, S_DownRight, S_DownLeft} S_Move_Type;
     static S_Move_Type s = S_Up;
 
     //Create state transitions
@@ -144,85 +140,88 @@ Move_Type brain::moveTypeState(int input){
     else if(input == 1) {s = S_Down;}
     else if(input == 2) {s = S_Right;}
     else if(input == 3) {s = S_Left;}
-    else if(input == 4) {s = S_Back;}
-    else if(input == 5) {s = S_Forward;}
-    else if(input == 6) {s = S_UpBack;}
-    else if(input == 7) {s = S_UpForward;}
     else if(input == 8) {s = S_UpRight;}
     else if(input == 9) {s = S_UpLeft;}
-    else if(input == 10) {s = S_UpBackRight;}
-    else if(input == 11) {s = S_UpBackLeft;}
-    else if(input == 12) {s = S_UpForwardRight;}
-    else if(input == 13) {s = S_UpForwardLeft;}
-    else if(input == 14) {s = S_DownBack;}
-    else if(input == 15) {s = S_DownForward;}
     else if(input == 16) {s = S_DownRight;}
     else if(input == 17) {s = S_DownLeft;}
-    else if(input == 18) {s = S_DownBackRight;}
-    else if(input == 19) {s = S_DownBackLeft;}
-    else if(input == 20) {s = S_DownForwardRight;}
-    else if(input == 21) {s = S_DownForwardLeft;}
-    else if(input == 22) {s = S_ForwardRight;}
-    else if(input == 23) {s = S_ForwardLeft;}
-    else if(input == 24) {s = S_BackRight;}
-    else if(input == 25) {s = S_BackLeft;}
-    else {s = s;}
+    else {s = S_Up;}
     //Create output table
     switch(s){
-        case(S_Up): return Up;
-        case(S_Down): return Down;
-        case(S_Left): return Left;
-        case(S_Right): return Right;
-        case(S_Forward): return Forward;
-        case(S_Back): return Back;
-        case(S_UpBack): return UpBack;
-        case(S_UpForward): return UpForward;
-        case(S_UpRight): return UpRight;
-        case(S_UpLeft): return UpLeft;
-        case(S_UpBackRight): return UpBackRight;
-        case(S_UpBackLeft): return UpBackLeft;
-        case(S_UpForwardRight): return UpForwardRight;
-        case(S_UpForwardLeft): return UpForwardLeft;
-        case(S_DownBack): return DownBack;
-        case(S_DownForward): return DownForward;
-        case(S_DownRight): return DownRight;
-        case(S_DownLeft): return DownLeft;
-        case(S_DownBackRight): return DownBackRight;
-        case(S_DownBackLeft): return DownBackLeft;
-        case(S_DownForwardRight): return DownForwardRight;
-        case(S_DownForwardLeft): return DownForwardLeft;
-        case(S_ForwardRight): return ForwardRight;
-        case(S_ForwardLeft): return ForwardLeft;
-        case(S_BackRight): return BackRight;
-        case(S_BackLeft): return BackLeft;
+        case(S_Up): set_direction(Up);
+        case(S_Down): set_direction(Down);
+        case(S_Left): set_direction(Left);
+        case(S_Right): set_direction(Right);
+        case(S_UpRight): set_direction(UpRight);
+        case(S_UpLeft): set_direction(UpLeft);
+        case(S_DownRight): set_direction(DownRight);
+        case(S_DownLeft): set_direction(DownLeft);
     }
-    return Up; //If state machine fails, fish swims upwards
+    set_direction(Up); //If state machine fails, fish swims upwards
 }
 
 //Function to implement the state of being of the fish and to choose
 // the fish's next state of being
-void brain::decision(){
+void brain::decisionState(){
     int driver;
     srand(time(NULL));
-    driver = rand() % 2;
-    currentState = moveState(driver);
-    switch(currentState){
-        case(Idle):
-            hunger++;
+    driver = rand() % 8;
+    //moveState(driver);
+    switch(driver){
+        case(0):
+            currentState = Idle;
             break;
-        case(Move):
-            hunger++;
-            driver = rand() % 30;
-            direction = moveTypeState(driver);
-            move(direction);
-            break;
-        case(Feed):
-            isFood = false;
-            hunger = 0;
+        case(1):
+        case(2):
+        case(3):
+        case(4):
+        case(5):
+        case(6):
+        case(7):
+            currentState = Move;
             break;
         default:
-            currentState = Idle;
+            currentState = Move;
     }
+}
+
+Move_Type brain::decisionDirection(){
+    int driver;
+    srand(time(NULL));
+    driver = rand() % 10;
+    //moveTypeState(driver);
+    switch(driver){
+        case(0):
+            direction = Up;
+            break;
+        case(1):
+            direction = Down;
+            break;
+        case(2):
+            direction = Right;
+            break;
+        case(3):
+            direction = Left;
+            break;
+        case(4):
+            direction = UpLeft;
+            break;
+        case(5):
+            direction = UpRight;
+            break;
+        case(6):
+            direction = DownLeft;
+            break;
+        case(7):
+            direction = DownRight;
+            break;
+        case(8):
+        case(9):
+            direction = direction;
+            break;
+        default:
+            direction = Up;
+    }
+    return direction;
 }
 
 //Function to return where the top of the fish is currently
@@ -253,6 +252,10 @@ Move_Type brain::getDirection(){
     return direction;
 }
 
-void brain::set_direction(Move_Type dir){
-    direction = dir;
+void brain::set_state(Move_State state){
+    currentState = state;
+}
+
+void brain::set_direction(Move_Type direction){
+    this->direction = direction;
 }
