@@ -7,8 +7,8 @@
 #include <QTimer>
 #include <QApplication>
 #include <QProcess>
-#include <iostream>
-#include <string>
+//#include <iostream>
+//#include <string>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),

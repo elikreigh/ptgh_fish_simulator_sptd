@@ -57,7 +57,7 @@ private:
     FloatingBubbles *splash_floater4;
     FloatingBubbles *splash_floater5;
     FloatingBubbles *splash_floater6;
-    //Fish and Bubbles and food for tank screen
+    //Fish and Bubbles and Food for tank screen
     Fish *mainFish;
     Bubbles *bubble1;
     Bubbles *bubble2;
