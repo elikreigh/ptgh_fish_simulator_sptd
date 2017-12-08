@@ -233,7 +233,7 @@ font: 75 36pt &quot;MS Serif&quot;;</string>
     </widget>
     <widget class="QWidget" name="tank_UI">
      <property name="styleSheet">
-      <string notr="true">backgroung-color: none;</string>
+      <string notr="true">background-color: none;</string>
      </property>
      <widget class="QLabel" name="Fish">
       <property name="geometry">
@@ -520,6 +520,22 @@ font: 75 auto &quot;MS Serif&quot;;</string>
        <pixmap>../Resources/Pillar.png</pixmap>
       </property>
      </widget>
+     <widget class="QPushButton" name="tank_button">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>1151</width>
+        <height>621</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: transparent;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
      <zorder>GameWindow</zorder>
      <zorder>sand</zorder>
      <zorder>frame</zorder>
@@ -530,6 +546,7 @@ font: 75 auto &quot;MS Serif&quot;;</string>
      <zorder>Fish</zorder>
      <zorder>pillar2</zorder>
      <zorder>pillar1</zorder>
+     <zorder>tank_button</zorder>
     </widget>
     <widget class="QWidget" name="setting_UI">
      <widget class="QPushButton" name="to_tank_button">

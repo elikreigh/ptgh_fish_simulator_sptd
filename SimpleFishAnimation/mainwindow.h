@@ -34,6 +34,7 @@ private slots:
     void on_credits_button_clicked();
     void on_controls_to_settings_button_clicked();
     void on_credits_to_settings_button_clicked();
+    void on_tank_button_clicked();
 
     void next_frame();
     void spawn_bubbles();
@@ -57,6 +58,8 @@ private:
     FishFood *food;
     Pillar *pillar1;
     Pillar *pillar2;
+
+    QPushButton *tank;
     //label layout
     QVBoxLayout *main_layout;
 

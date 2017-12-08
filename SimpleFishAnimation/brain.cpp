@@ -72,16 +72,20 @@ void brain::setY(int new_y){
 void brain::move(Move_Type dir){
     switch(dir){
         case(Up):
+            setX(x_att);
             setY(y_att - 1);
             break;
         case(Down):
+            setX(x_att);
             setY(y_att + 1);
             break;
         case(Left):
             setX(x_att - 1);
+            setY(y_att);
             break;
         case(Right):
             setX(x_att + 1);
+            setY(y_att);
             break;
         case(UpLeft):
             setX(x_att - 1);
@@ -247,4 +251,8 @@ Move_State brain::getState(){
 
 Move_Type brain::getDirection(){
     return direction;
+}
+
+void brain::set_direction(Move_Type dir){
+    direction = dir;
 }

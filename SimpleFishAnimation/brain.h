@@ -37,6 +37,7 @@ public:
     int getBottom();
     int getLeft();
     int getRight();
+    void set_direction(Move_Type dir);
 
 private:
     bool isFood;
