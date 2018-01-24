@@ -20,7 +20,9 @@ SOURCES += main.cpp\
     floatingbubbles.cpp \
     fishfood.cpp \
     brain.cpp \
-    pillar.cpp
+    pillar.cpp \
+    gamelogic.cpp \
+    interferences.cpp
 
 HEADERS  += mainwindow.h \
     fish.h \
@@ -28,14 +30,17 @@ HEADERS  += mainwindow.h \
     floatingbubbles.h \
     fishfood.h \
     brain.h \
-    pillar.h
+    pillar.h \
+    gamelogic.h \
+    interferences.h
 
 FORMS    += mainwindow.ui
 
 QT += uitools
 
 RESOURCES += \
-    sound.qrc
+    sound.qrc \
+    pictures.qrc
 
 DISTFILES += \
     click.mp3 \

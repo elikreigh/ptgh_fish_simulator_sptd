@@ -6,11 +6,13 @@
 #include <QVBoxLayout>
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
+#include <QPoint>
 #include "fish.h"
 #include "bubbles.h"
 #include "floatingbubbles.h"
 #include "fishfood.h"
 #include "pillar.h"
+#include "gamelogic.h"
 
 
 namespace Ui {
@@ -29,7 +31,6 @@ private slots:
     void movement_logic();
     void on_start_button_clicked();
     void on_to_settings_button_clicked();
-    void on_to_tank_button_clicked();
     void on_exit_button_clicked();
     void on_kill_button_clicked();
     void on_feeding_button_clicked();
@@ -37,13 +38,14 @@ private slots:
     void on_credits_button_clicked();
     void on_controls_to_settings_button_clicked();
     void on_credits_to_settings_button_clicked();
-    void on_tank_button_clicked();
 
     void next_frame();
     void spawn_bubbles();
 
     void on_music_slider_sliderMoved(int position);
     void on_sfx_slider_sliderMoved(int position);
+
+    void mousePressEvent(QMouseEvent *event);
 
 private:
     Ui::MainWindow *ui;
@@ -57,7 +59,7 @@ private:
     FloatingBubbles *splash_floater4;
     FloatingBubbles *splash_floater5;
     FloatingBubbles *splash_floater6;
-    //Fish and Bubbles and Food for tank screen
+    //Fish and Bubbles and food for tank screen
     Fish *mainFish;
     Bubbles *bubble1;
     Bubbles *bubble2;
@@ -66,11 +68,12 @@ private:
     Pillar *pillar1;
     Pillar *pillar2;
 
-    QPushButton *tank;
     //label layout
     QVBoxLayout *main_layout;
 
-    Pillar *pile[2];
+    Interferences *pile[3];
+
+    QPoint mouse_cord;
 };
 
 #endif // MAINWINDOW_H

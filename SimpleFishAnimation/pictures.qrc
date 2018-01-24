@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/pictures">
+        <file>BubbleBasic1.png</file>
+        <file>BubbleBasic2.png</file>
+        <file>BubblesFrame1.png</file>
+        <file>BubblesFrame2.png</file>
+        <file>FishFinUp.png</file>
+        <file>FishFood1.png</file>
+        <file>FishFood2.png</file>
+        <file>FishIdle.png</file>
+        <file>TemporaryFish.png</file>
+        <file>Pillar.png</file>
+    </qresource>
+</RCC>

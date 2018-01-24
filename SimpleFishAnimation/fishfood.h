@@ -1,14 +1,10 @@
 #ifndef FISHFOOD_H
 #define FISHFOOD_H
 
-#include <QtUiTools>
-#include <QString>
-#include <QPixmap>
-#include <QImage>
-#include <cstdlib>
+#include "interferences.h"
 #include "pillar.h"
 
-class FishFood
+class FishFood : public Interferences
 {
 public:
     FishFood();
@@ -20,12 +16,8 @@ public:
     void show_food();
     void eaten();
     void new_spawn();
-    bool no_over_lap(Pillar *pile[2]);
-    int getLeft();
-    int getRight();
-    int getBottom();
-    int getTop();
-    QLabel* getUI();
+    //Looking through the three pile objects will include current object
+    bool no_over_lap(Interferences *pile[3]);
 
 private:
     QLabel *ui_fish_food;

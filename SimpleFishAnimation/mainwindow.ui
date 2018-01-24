@@ -35,7 +35,7 @@
 </string>
     </property>
     <property name="currentIndex">
-     <number>4</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="startup_UI">
      <widget class="QPushButton" name="start_button">
@@ -235,37 +235,6 @@ font: 75 36pt &quot;MS Serif&quot;;</string>
      <property name="styleSheet">
       <string notr="true">background-color: none;</string>
      </property>
-     <widget class="QLabel" name="Fish">
-      <property name="geometry">
-       <rect>
-        <x>930</x>
-        <y>280</y>
-        <width>111</width>
-        <height>71</height>
-       </rect>
-      </property>
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: none;</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap>../../../Desktop/Software Engineering Concept Art/FishIdle.png</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
      <widget class="QFrame" name="frame">
       <property name="geometry">
        <rect>
@@ -464,21 +433,6 @@ font: 75 auto &quot;MS Serif&quot;;</string>
        <enum>QFrame::Raised</enum>
       </property>
      </widget>
-     <widget class="QGraphicsView" name="GameWindow">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>1151</width>
-        <height>621</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-		stop:0 white, stop:1 blue);
-</string>
-      </property>
-     </widget>
      <widget class="QLabel" name="pillar2">
       <property name="geometry">
        <rect>
@@ -495,7 +449,7 @@ font: 75 auto &quot;MS Serif&quot;;</string>
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>../Resources/Pillar.png</pixmap>
+       <pixmap resource="pictures.qrc">:/pictures/Pillar.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -517,10 +471,10 @@ font: 75 auto &quot;MS Serif&quot;;</string>
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>../Resources/Pillar.png</pixmap>
+       <pixmap resource="pictures.qrc">:/pictures/Pillar.png</pixmap>
       </property>
      </widget>
-     <widget class="QPushButton" name="tank_button">
+     <widget class="QFrame" name="frame_2">
       <property name="geometry">
        <rect>
         <x>0</x>
@@ -530,23 +484,57 @@ font: 75 auto &quot;MS Serif&quot;;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: transparent;</string>
+       <string notr="true">background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+		stop:0 white, stop:1 blue);
+</string>
       </property>
-      <property name="text">
-       <string/>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
       </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QLabel" name="Fish">
+       <property name="geometry">
+        <rect>
+         <x>990</x>
+         <y>250</y>
+         <width>111</width>
+         <height>71</height>
+        </rect>
+       </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: none;</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap resource="pictures.qrc">:/pictures/FishIdle.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+      </widget>
      </widget>
-     <zorder>GameWindow</zorder>
+     <zorder>frame_2</zorder>
      <zorder>sand</zorder>
      <zorder>frame</zorder>
      <zorder>bubbles1</zorder>
      <zorder>bubbles2</zorder>
      <zorder>single_bubble1</zorder>
-     <zorder>Fish</zorder>
+     <zorder>food1</zorder>
      <zorder>pillar2</zorder>
      <zorder>pillar1</zorder>
-     <zorder>food1</zorder>
-     <zorder>tank_button</zorder>
     </widget>
     <widget class="QWidget" name="setting_UI">
      <widget class="QPushButton" name="to_tank_button">
@@ -941,8 +929,6 @@ font: 75 auto &quot;MS Serif&quot;;</string>
      </widget>
     </widget>
    </widget>
-   <zorder>stackedWidget</zorder>
-   <zorder>tank_button</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -965,6 +951,8 @@ font: 75 auto &quot;MS Serif&quot;;</string>
   <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="pictures.qrc"/>
+ </resources>
  <connections/>
 </ui>
