@@ -7,8 +7,10 @@
 #include <QTimer>
 #include <QApplication>
 #include <QProcess>
-//#include <iostream>
-//#include <string>
+#include <iostream>
+#include <string>
+#include <QMouseEvent>
+#include <QtDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -17,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->stackedWidget->setCurrentIndex(0);
     setWindowTitle(tr("TankDisplay"));
+    setMouseTracking(true);
 
     //background bubbling sound
     sound_fx = new QMediaPlayer();
@@ -38,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
     splash_floater4 = new FloatingBubbles();
     splash_floater5 = new FloatingBubbles();
     splash_floater6 = new FloatingBubbles();
+
     //Fish and Bubbles and Food and Pillars for tank screen
     mainFish = new Fish(this->width(),this->height());
     bubble1 = new Bubbles();
@@ -49,7 +53,9 @@ MainWindow::MainWindow(QWidget *parent) :
     pillar1 = new Pillar();
     pillar2 = new Pillar();
 
-    tank = new QPushButton();
+    //mouse coordinates
+    mouse_cord.setX(0);
+    mouse_cord.setY(0);
 
     //assigning label to bubbles for splash screen
     splash_floater1->set_bubble(findChild<QLabel*>("spash_floater1"));
@@ -59,24 +65,31 @@ MainWindow::MainWindow(QWidget *parent) :
     splash_floater5->set_bubble(findChild<QLabel*>("spash_floater5"));
     splash_floater6->set_bubble(findChild<QLabel*>("spash_floater6"));
     //assinging label to fish and bubbles for tank screen
-    mainFish->set_fish(findChild<QLabel*>("Fish"));
     bubble1->set_bubble(findChild<QLabel*>("bubbles1"));
     bubble2->set_bubble(findChild<QLabel*>("bubbles2"));
     single_bubble1->set_bubble(findChild<QLabel*>("single_bubble1"));
 
     food->set_food(findChild<QLabel*>("food1"));
 
-    pillar1->set_pillar(findChild<QLabel*>("pillar1"));
-    pillar2->set_pillar(findChild<QLabel*>("pillar2"));
+    pillar1->set_label(findChild<QLabel*>("pillar1"));
+    pillar2->set_label(findChild<QLabel*>("pillar2"));
 
+
+    mainFish->set_fish(findChild<QLabel*>("Fish"));
+    mainFish->sprite_setup();
     mainFish->brain_setup();
-
-    tank = findChild<QPushButton*>("tank_button");
-    tank->setStyleSheet("background-color: transparent; ");
+    /*tank = findChild<QPushButton*>("tank_button");
+    tank->setStyleSheet("background-color: transparent; ");*/
 
     //setting up pile
     pile[0] = pillar1;
     pile[1] = pillar2;
+    pile[2] = food;
+
+    for(int i = 0; i < 3; i++){
+        pile[i]->set_depth(rand()%10);
+    }
+    pile[0]->set_depth(5);
 
     //timer: starting move events
     //animations_timer cycles fish sprite, can be included with the moving animation
@@ -126,51 +139,40 @@ void MainWindow::movement_logic(){
     }
     //tank screen
     else if(ui->stackedWidget->currentIndex() == 1 ){
-        //Placeholder bouncing
-        /*if(mainFish->get_left()){
-            mainFish->swim(-3,0);
-            if(mainFish->get_x() < 10){
-                mainFish->set_left(false);
-            }
-        }
-        else if(!mainFish->get_left()){
-            mainFish->swim(3,0);
-            if(mainFish->get_x() > 1060){
-                mainFish->set_left(true);
-            }
-        }*/
         /*if(findChild<QLabel*>("single_bubble1") != 0){
             single_bubble1->float_up();
         }*/
-        //mainFish->get_brain().decisionState();
-        if(ui->stackedWidget->currentIndex() == 1/* && mainFish->get_brain().getState() == Move*/){
-            mainFish->fish_logic(mainFish,pile,food,sound_fx);
+        mainFish->logic(pile);
+        if(mainFish->eat_food(pile)){
+            food->eaten();
+            sound_fx->setMedia(QUrl("qrc:/sound/munch.mp3"));
+            sound_fx->play();
         }
-//        if(ui->stackedWidget->currentIndex() == 1/* && mainFish->get_brain().getState() == Move*/){
-//            Fish *test_fish = new Fish(mainFish);
-//            enum Move_Type direction;
-//            test_fish->swim();
-//            direction = (test_fish->get_brain()).getDirection();
-//            if(test_fish->no_over_lap(pile)){
-//                /*if(direction == Left || direction == UpLeft || direction == DownLeft){
-//                    mainFish->set_left(true);
-//                }
-//                else if(direction == Right || direction == UpRight || direction == DownRight){
-//                    mainFish->set_left(false);
-//                } else {
-//                    mainFish->set_left(mainFish->get_face_left());
-//                }*/
-//                mainFish->get_brain().set_direction(direction);
-//                mainFish->swim(direction);
-//                if(mainFish->eat_food(food)){
-//                    food->eaten();
-//                    sound_fx->setMedia(QUrl("qrc:/sound/munch.mp3"));
-//                    sound_fx->play();
-//                }
-//            }
-//            test_fish->~Fish();
-//            //mainFish->swim(DownRight);
-//        }
+        /*if(ui->stackedWidget->currentIndex() == 1 && mainFish->get_brain().getState() == Move){
+            Fish *test_fish = new Fish(mainFish);
+            enum Move_Type direction;
+            test_fish->swim();
+            direction = (test_fish->get_brain()).getDirection();
+            if(test_fish->no_over_lap(pile)){
+                if(direction == Left || direction == UpLeft || direction == DownLeft){
+                    mainFish->set_left(true);
+                }
+                else if(direction == Right || direction == UpRight || direction == DownRight){
+                    mainFish->set_left(false);
+                } else {
+                    mainFish->set_left(mainFish->get_face_left());
+                }
+                mainFish->get_brain().set_direction(direction);
+                mainFish->swim(direction);
+                if(mainFish->eat_food(food)){
+                    food->eaten();
+                    sound_fx->setMedia(QUrl("qrc:/sound/munch.mp3"));
+                    sound_fx->play();
+                }
+            }
+            test_fish->~Fish();
+            //mainFish->swim(DownRight);
+        }*/
         single_bubble1->float_up();
         if(food->no_over_lap(pile)){
             food->sink();
@@ -217,6 +219,66 @@ void MainWindow::next_frame(){
     }
 }
 
+/*Mouse Tracking*/
+void MainWindow::mousePressEvent(QMouseEvent *event){
+    qDebug() << "Before Click Event";
+    if(ui->stackedWidget->currentIndex() == 1){
+        sound_fx->setMedia(QUrl("qrc:/sound/tap.mp3"));
+        sound_fx->play();
+        mouse_cord = event->pos();
+        mainFish->frighten(mouse_cord);
+        qDebug() << "After Click Event";
+        /*enum Move_Type direction;
+        if(mainFish->get_x() < mouse_cord.x() && mainFish->get_y() < mouse_cord.y()){
+            direction = UpLeft;
+        }
+        else if(mainFish->get_x() == mouse_cord.x() && mainFish->get_y() > mouse_cord.y()){
+            direction = Up;
+        }
+        else if(mainFish->get_x() > mouse_cord.x() && mainFish->get_y() > mouse_cord.y()){
+            direction = UpRight;
+        }
+        else if(mainFish->get_x() > mouse_cord.x() && mainFish->get_y() == mouse_cord.y()){
+            direction = Right;
+        }
+        else if(mainFish->get_x() < mouse_cord.x() && mainFish->get_y() < mouse_cord.y()){
+            direction = DownRight;
+        }
+        else if(mainFish->get_x() == mouse_cord.x() && mainFish->get_y() < mouse_cord.y()){
+            direction = Down;
+        }
+        else if(mainFish->get_x() > mouse_cord.x() && mainFish->get_y() < mouse_cord.y()){
+            direction = DownLeft;
+        }
+        else if(mainFish->get_x() < mouse_cord.x() && mainFish->get_y() == mouse_cord.y()){
+            direction = Left;
+        }
+
+        Fish *test_fish = new Fish(mainFish);
+        test_fish->test_swim(direction);
+        if(test_fish->no_over_lap(pile)){
+            if(direction == Left || direction == UpLeft || direction == DownLeft){
+                mainFish->set_left(true);
+            }
+            else if(direction == Right || direction == UpRight || direction == DownRight){
+                mainFish->set_left(false);
+            } else {
+                mainFish->set_left(mainFish->get_face_left());
+            }
+            mainFish->get_brain().set_direction(direction);
+            mainFish->swim(direction);
+            if(mainFish->eat_food(food)){
+                food->eaten();
+                sound_fx->setMedia(QUrl("qrc:/sound/munch.mp3"));
+                sound_fx->play();
+            }
+
+            mainFish->get_brain().set_state(Scared);
+        }
+        test_fish->~Fish();*/
+    }
+}
+
 /*Startup Screen Inputs*/
 void MainWindow::on_start_button_clicked(){
     sound_fx->setMedia(QUrl("qrc:/sound/click.mp3"));
@@ -239,6 +301,7 @@ void MainWindow::on_feeding_button_clicked(){
     /*QLabel *new_food = new QLabel("food1", ui->GameWindow, 0);
     new_food->setGeometry(100,100,100,100);*/
     food->show_food();
+    mainFish->feeding();
 }
 
 void MainWindow::on_kill_button_clicked(){
@@ -248,17 +311,13 @@ void MainWindow::on_kill_button_clicked(){
     QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
 }
 
-void MainWindow::on_tank_button_clicked(){
-    sound_fx->setMedia(QUrl("qrc:/sound/tap.mp3"));
-    sound_fx->play();
-}
-
 /*Settings Screen Inputs*/
-void MainWindow::on_to_tank_button_clicked(){
+/*void MainWindow::on_to_tank_button_clicked(){
     sound_fx->setMedia(QUrl("qrc:/sound/click.mp3"));
     sound_fx->play();
     ui->stackedWidget->setCurrentIndex(1);
-}
+}*/
+
 void MainWindow::on_credits_button_clicked(){
     sound_fx->setMedia(QUrl("qrc:/sound/click.mp3"));
     sound_fx->play();
