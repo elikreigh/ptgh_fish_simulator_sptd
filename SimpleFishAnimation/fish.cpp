@@ -2,7 +2,7 @@
 //Purpose: basic fish animations (cycles through currently two) and setting fish location
 //Date: 12/1/2017
 #include "fish.h"
-#include <windows.h>
+#include "mainwindow.h"
 
 Fish::Fish(int window_width, int window_height){
     this->face_left = true;
@@ -11,10 +11,11 @@ Fish::Fish(int window_width, int window_height){
 }
 
 Fish::Fish(Fish *newFish){
-    face_left = true;
+    this->face_left = true;
     sprite_index = 0;
     f_brain = new brain(newFish->get_brain());
-    this->set_left(newFish->get_face_left());
+    set_left(newFish->get_face_left());
+    counter = 0;
 }
 
 brain Fish::get_brain(){
@@ -34,151 +35,63 @@ bool Fish::get_face_left(){
     return face_left;
 }
 
-QLabel* Fish::get_label(){
-    return ui_fish;
-}
-
 void Fish::set_fish(QLabel *fish){
     ui_fish = fish;
-    ui_fish->setPixmap(QPixmap(":/pictures/FishIdle.png"));
-    ui_fish->setGeometry(1050, 300, ui_fish->width(), ui_fish->height());
+    origin();
 }
 
 void Fish::brain_setup(){
-    f_brain->setX(1050);
-    f_brain->setY(300);
-    f_brain->setDestination();
+    f_brain->setX(ui_fish->x());
+    f_brain->setY(ui_fish->y());
     f_brain->set_fwidth(ui_fish->width());
     f_brain->set_fheight(ui_fish->height());
 }
 
-void Fish::sprite_setup(){
-    ui_fish->setPixmap(QPixmap(":/pictures/FishFinUp.png"));
-    ui_fish->move(f_brain->getX(), f_brain->getY());
-}
-
 /*Mutator for state*/
-void Fish::logic(Interferences* pile[3]){
-    this->f_brain->decisionState(pile);
-    this->set_left(f_brain->getDirection());
-    this->sprite_swim();
-}
-
 void Fish::set_left(bool lft){
     face_left = lft;
 }
 
-void Fish::set_left(Move_Type dir){
-    if(dir == Left || dir == UpLeft || dir == DownLeft || dir == ALeft || dir == AUpLeft || dir == ADownLeft || dir == TLeft || dir == TUpLeft || dir == TDownLeft){
-        face_left = true;
-    }
-    else if(dir == Right || dir == UpRight || dir == DownRight || dir == ARight || dir == AUpRight || dir == ADownRight || dir == TRight || dir == TUpRight || dir == TDownRight){
-        face_left = false;
-    } else {
-        face_left = face_left;
-    }
-}
-
-void Fish::frighten(QPoint mouse_cord){
-    f_brain->setDestination(mouse_cord);
-    f_brain->set_state(Scared);
-}
-
-void Fish::feeding(){
-    f_brain->set_state(Feeding);
-}
-
 void Fish::swim(){
-    /*Move_Type direction = f_brain->decisionDirection();
-    f_brain->move(direction);*/
+    Move_Type direction = f_brain->decisionDirection();
+    f_brain->move(direction);
 }
 
 void Fish::swim(Move_Type direction){
-    this->cycle_sprite();
-    f_brain->decisionDirection(direction);
+    cycle_sprite();
+    f_brain->move(direction);
     ui_fish->move(f_brain->getX(), f_brain->getY());
 }
 
-void Fish::sprite_swim(){
-    this->cycle_sprite();
-    ui_fish->move(f_brain->getX(), f_brain->getY());
+/*Idle Animation*/
+void Fish::bob(){
+    if(f_brain->getState() == Idle){
+        ui_fish->move(ui_fish->x(), ui_fish->y());
+    }
 }
 
-void Fish::test_swim(Move_Type direction){
-    /*f_brain->move(direction);*/
-}
-
-void Fish::run(QPoint mouse_cord){
-    /*enum Move_Type direction;
-    if(ui_fish->x() < mouse_cord.x() && ui_fish->y() < mouse_cord.y()){
-        direction = UpLeft;
-    }
-    else if(ui_fish->x() == mouse_cord.x() && ui_fish->y() > mouse_cord.y()){
-        direction = Up;
-    }
-    else if(ui_fish->x() > mouse_cord.x() && ui_fish->y() > mouse_cord.y()){
-        direction = UpRight;
-    }
-    else if(ui_fish->x() > mouse_cord.x() && ui_fish->y() == mouse_cord.y()){
-        direction = Right;
-    }
-    else if(ui_fish->x() < mouse_cord.x() && ui_fish->y() < mouse_cord.y()){
-        direction = DownRight;
-    }
-    else if(ui_fish->x() == mouse_cord.x() && ui_fish->y() < mouse_cord.y()){
-        direction = Down;
-    }
-    else if(ui_fish->x() > mouse_cord.x() && ui_fish->y() < mouse_cord.y()){
-        direction = DownLeft;
-    }
-    else if(ui_fish->x() < mouse_cord.x() && ui_fish->y() == mouse_cord.y()){
-        direction = Left;
-    }
-
-    Fish *test_fish = new Fish(this);
-    test_fish->swim(direction);
-    if(test_fish->no_over_lap(pile)){
-        if(direction == Left || direction == UpLeft || direction == DownLeft){
-            this->set_left(true);
-        }
-        else if(direction == Right || direction == UpRight || direction == DownRight){
-            this->set_left(false);
-        } else {
-            this->set_left(this->get_face_left());
-        }
-        this->get_brain().set_direction(direction);
-    }
-    test_fish->~Fish();*/
+void Fish::origin(){
+    ui_fish->setGeometry(1050, 300, ui_fish->width(), ui_fish->height());
 }
 
 void Fish::cycle_sprite(){
     //Default sprite is idle, toggles between fin states
     //Flips QPixmap if right
     //Frames will be moved to an attribute of fish and not individually cycled
-
-    if(f_brain->getDepth() < f_brain->getPrevDepth()){
-        ui_fish->resize(ui_fish->width()+2, ui_fish->height()+1);
-        this->f_brain->resetPrevDepth();
-    }
-    else if(f_brain->getDepth() > f_brain->getPrevDepth()){
-        ui_fish->resize(ui_fish->width()-2, ui_fish->height()-1);
-        this->f_brain->resetPrevDepth();
-    }
-
     if(face_left){
         if(sprite_index == 1){
-            ui_fish->setPixmap(QPixmap(":/pictures/FishFinUp.png"));
+            ui_fish->setPixmap(QPixmap("../Resources/FishFinUp.png"));
         }
         else{
-            ui_fish->setPixmap(QPixmap(":/pictures/FishIdle.png"));
+            ui_fish->setPixmap(QPixmap("../Resources/FishIdle.png"));
         }
     }
     else{
         if(sprite_index == 1){
-            ui_fish->setPixmap(QPixmap::fromImage(QPixmap(":/pictures/FishFinUp.png").toImage().mirrored(true, false)));
+            ui_fish->setPixmap(QPixmap::fromImage(QPixmap("../Resources/FishFinUp.png").toImage().mirrored(true, false)));
         }
         else{
-            ui_fish->setPixmap(QPixmap::fromImage(QPixmap(":/pictures/FishIdle.png").toImage().mirrored(true, false)));
+            ui_fish->setPixmap(QPixmap::fromImage(QPixmap("../Resources/FishIdle.png").toImage().mirrored(true, false)));
         }
     }
 
@@ -187,16 +100,55 @@ void Fish::cycle_sprite(){
         sprite_index = 0;
 }
 
-bool Fish::eat_food(Interferences *pile[3]){
+bool Fish::no_over_lap(Pillar *pile[2]){
+    bool ans = true;
+    for(int i = 0; i < 2; i++){
+        int pile_right = pile[i]->get_right();
+        int pile_left = pile[i]->get_left();
+        int pile_top = pile[i]->get_top();
+        if((f_brain->getLeft() == pile_right && f_brain->getBottom() >= pile_top) || (f_brain->getRight() == pile_left && f_brain->getBottom() >= pile_top) || (f_brain->getBottom() == pile_top && f_brain->getRight() >= pile_left && f_brain->getLeft() <= pile_right)){
+            ans = false;
+        }
+    }
+    return ans;
+}
+
+bool Fish::eat_food(FishFood *food){
     bool ans = false;
-    if(!pile[2]->get_label()->isHidden()){
-        int food_right = pile[2]->get_right();
-        int food_left = pile[2]->get_left();
-        int food_top = pile[2]->get_top();
-        int food_bottom = pile[2]->get_bottom();
-        if((f_brain->getLeft() <= (food_left+25) && f_brain->getLeft() >= (food_left-25)) && (f_brain->getTop() <= (food_top+25) && f_brain->getTop() >= (food_top-25))){
+    if(!food->getUI()->isHidden()){
+        int food_right = food->getRight();
+        int food_left = food->getLeft();
+        int food_top = food->getTop();
+        int food_bottom = food->getBottom();
+        if((f_brain->getLeft() <= (food_left+25) && f_brain->getLeft() >= (food_left-25)) && (f_brain->getBottom() <= (food_bottom+25) && f_brain->getBottom() >= (food_bottom-25))){
             ans = true;
         }
     }
     return ans;
+}
+
+void Fish::fish_logic(Fish* mainFish, Pillar *pile[], FishFood* food, QMediaPlayer* sound_fx){
+    Fish *test_fish = new Fish(mainFish);
+    enum Move_Type direction;
+    test_fish->swim();
+    direction = (test_fish->get_brain()).getDirection();
+    if(test_fish->no_over_lap(pile)){
+        if(direction == Left || direction == UpLeft || direction == DownLeft){
+            mainFish->set_left(true);
+        }
+        else if(direction == Right || direction == UpRight || direction == DownRight){
+            mainFish->set_left(false);
+        } else {
+            mainFish->set_left(mainFish->get_face_left());
+        }
+        mainFish->get_brain().set_direction(direction);
+        mainFish->swim(direction);
+        if(mainFish->eat_food(food)){
+            food->eaten();
+            sound_fx->setMedia(QUrl("qrc:/sound/munch.mp3"));
+            sound_fx->play();
+        }
+    }
+    test_fish->~Fish();
+    //mainFish->swim(DownRight);
 }

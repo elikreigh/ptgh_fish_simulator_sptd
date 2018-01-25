@@ -6,6 +6,7 @@
 #include <QPixmap>
 #include <QImage>
 #include <QLabel>
+#include <QMediaPlayer>
 #include "brain.h"
 #include "pillar.h"
 #include "fishfood.h"
@@ -18,26 +19,19 @@ public:
 
     void swim();
     void swim(Move_Type direction);
-    void sprite_swim();
-    void test_swim(Move_Type direction);
+    void bob();
+    void origin();
     void set_fish(QLabel *fish);
     void cycle_sprite();
     int get_x();
     int get_y();
     bool get_face_left();
-    QLabel* get_label();
     void set_left(bool lft);
-    void set_left(Move_Type dir);
-    void frighten(QPoint mouse_cord);
-    void feeding();
     brain get_brain();
     void brain_setup();
-    void sprite_setup();
-    bool no_over_lap(Interferences* pile[3]);
-    bool eat_food(Interferences* pile[3]);
-    void run(QPoint mouse_cord);
-
-    void logic(Interferences* pile[3]);
+    bool no_over_lap(Pillar* pile[2]);
+    bool eat_food(FishFood* food);
+    void fish_logic(Fish* mainFish, Pillar* pile[2], FishFood* food, QMediaPlayer *sound_fx);
 
 private:
     QLabel *ui_fish;
@@ -45,6 +39,8 @@ private:
     int sprite_index;
     bool face_left;
     brain *f_brain;
+    int counter;
+    Fish *mainFish;
 };
 
 #endif // FISH_H
