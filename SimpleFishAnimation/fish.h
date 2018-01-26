@@ -26,6 +26,7 @@ public:
     int get_y();
     bool get_face_left();
     QLabel* get_label();
+    float get_hunger();
     void set_left(bool lft);
     void set_left(Move_Type dir);
     void frighten(QPoint mouse_cord);

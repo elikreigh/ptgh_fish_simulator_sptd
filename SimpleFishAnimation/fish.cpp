@@ -38,6 +38,10 @@ QLabel* Fish::get_label(){
     return ui_fish;
 }
 
+float Fish::get_hunger(){
+    return f_brain->getHunger();
+}
+
 void Fish::set_fish(QLabel *fish){
     ui_fish = fish;
     ui_fish->setPixmap(QPixmap(":/pictures/FishIdle.png"));
@@ -84,7 +88,9 @@ void Fish::frighten(QPoint mouse_cord){
 }
 
 void Fish::feeding(){
-    f_brain->set_state(Feeding);
+    if(f_brain->getHunger() > .25){
+        f_brain->set_state(Feeding);
+    }
 }
 
 void Fish::swim(){
@@ -195,6 +201,8 @@ bool Fish::eat_food(Interferences *pile[3]){
         int food_bottom = pile[2]->get_bottom();
         if((f_brain->getLeft() <= (food_left+25) && f_brain->getLeft() >= (food_left-25)) && (f_brain->getTop() <= (food_top+25) && f_brain->getTop() >= (food_top-25))){
             ans = true;
+            f_brain->set_state(DecideMove);
+            f_brain->reduce_hunger();
         }
     }
     return ans;

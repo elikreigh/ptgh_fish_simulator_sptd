@@ -97,6 +97,10 @@ int brain::getPrevDepth(){
     return prevdepth;
 }
 
+float brain::getHunger(){
+    return hunger;
+}
+
 //Function to change the x attribute of the fish
 void brain::setX(int new_x){
     if (new_x < 10) place.setX(10);
@@ -150,6 +154,16 @@ void brain::setDestination(Interferences* pile[3]){
     destination.setX(pile[2]->get_left());
     destination.setY(pile[2]->get_top());
     destdepth = pile[2]->get_depth();
+}
+
+void brain::increase_hunger(){
+    if ((hunger+.0001) <= .9999) hunger += .0001;
+    else hunger = 1;
+}
+
+void brain::reduce_hunger(){
+    if ((hunger-.25) > 0) hunger -= .25;
+    else hunger = 0;
 }
 
 //State machine to choose the next movement direction of the fish
@@ -346,6 +360,7 @@ void brain::move(Move_Type dir){
             break;
     }
     this->direction = dir;
+    this->increase_hunger();
 }
 
 void brain::move(Interferences* pile[3]){
@@ -471,14 +486,17 @@ void brain::move(Interferences* pile[3]){
         else {
             this->setDepth(this->getDepth()+1);
         }
+        this->increase_hunger();
 }
 
 //Function to choose the next state of the fish
-void brain::changeState(int input){
+void brain::changeState(int input, Interferences *pile[3]){
     typedef enum {S_Move, S_Idle, S_DecideMove, S_Feeding} SMove;
     static SMove s = S_Idle;
     //Create state transitions
-         if((input <= 3) && (current_state == Idle)) {s = S_Idle;}
+         if(hunger > .50 &&
+                 pile[2]->get_label()->isVisible())  {s = S_Feeding;}
+    else if((input <= 3) && (current_state == Idle)) {s = S_Idle;}
     else if((input > 3) && (current_state == Idle))  {s = S_DecideMove;}
     else if(current_state == DecideMove)             {s = S_Move;}
     else if(((place.x() == destination.x()) && (place.y() == destination.y()))
@@ -491,7 +509,7 @@ void brain::changeState(int input){
                  (current_state == Feeding))         {s = S_DecideMove;}
      else if(!(((place.x() <= destination.x()+25) && (place.x() >= destination.x()-25)) &&
                 ((place.y() <= destination.y()+25) && (place.y() >= destination.y()-25))) &&
-                (current_state == Feeding))     {s = S_Feeding;}
+                (current_state == Feeding))          {s = S_Feeding;}
     else {s = S_Idle;}//If state machine fails, fish goes to Idle state
 
     //Create output table
@@ -518,7 +536,6 @@ void brain::decisionState(Interferences* pile[3]){
 
     switch (current_state) {
         case (Idle):
-            qDebug() << "Before Idle";
             fish_speed = 1;
             if(bob_counter <= 4 || (bob_counter > 14 && bob_counter <=19)){
                 this->move(Up);
@@ -531,21 +548,20 @@ void brain::decisionState(Interferences* pile[3]){
                 this->move(Up);
             }
             bob_counter++;
-            qDebug() << "After Idle" << this->getX() << " " << this->getY() << "\nFish Dest: " << this->get_destination().x() << " " << this->get_destination().y();;
+            qDebug() << "hunger" << hunger;
+            //qDebug() << "After Idle" << this->getX() << " " << this->getY() << "\nFish Dest: " << this->get_destination().x() << " " << this->get_destination().y();
                     break;
         case (DecideMove):
-            qDebug() << "Before Decide Move";
             fish_speed = 1;
             this->setDestination();
-            qDebug() << "After Decide Move";
                     break;
         case (Move):
-            qDebug() << "Before Move";
             fish_speed = 1;
             this->decisionDirection();
             this->move(pile);
-            qDebug() << "After Move\nFish Pos: " << this->getX() << " " << this->getY() << "\nFish Dest: " << this->get_destination().x() << " " << this->get_destination().y();
+            //qDebug() << "After Move\nFish Pos: " << this->getX() << " " << this->getY() << "\nFish Dest: " << this->get_destination().x() << " " << this->get_destination().y();
             //start moving towards destination
+            qDebug() << "hunger " << hunger;
                     break;
         case (Scared):
             fish_speed = 3;
@@ -555,9 +571,10 @@ void brain::decisionState(Interferences* pile[3]){
             this->setDestination(pile);
             this->decisionDirection();
             this->move(pile);
+            qDebug() << "hunger " << hunger;
                     break;
     }
-    this->changeState(driver);
+    this->changeState(driver, pile);
     /*
     switch(driver){
         case(0):

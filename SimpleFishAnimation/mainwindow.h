@@ -39,6 +39,8 @@ private slots:
     void on_controls_to_settings_button_clicked();
     void on_credits_to_settings_button_clicked();
 
+    void feeding_check();
+
     void next_frame();
     void spawn_bubbles();
 
@@ -67,6 +69,8 @@ private:
     FishFood *food;
     Pillar *pillar1;
     Pillar *pillar2;
+
+    QPushButton *feeding_button1;
 
     //label layout
     QVBoxLayout *main_layout;

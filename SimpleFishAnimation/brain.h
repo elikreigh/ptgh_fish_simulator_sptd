@@ -16,7 +16,7 @@ public:
     brain(int width, int height);
     brain(brain *other);
 
-    void changeState(int input);
+    void changeState(int input, Interferences* pile[3]);
     void moveTypeState(int input);
     Move_State getState();
     Move_Type getDirection();
@@ -48,6 +48,10 @@ public:
     int getLeft();
     int getRight();
 
+    void increase_hunger();
+    void reduce_hunger();
+    float getHunger();
+
     QPoint get_destination();
 
     bool no_over_lap(Interferences* pile[3]);
@@ -67,9 +71,9 @@ private:
     int max_width;
     int fish_height;
     int fish_width;
-    int hunger;
     int bob_counter;
     int fish_speed;
+    float hunger;
 };
 
 #endif // BRAIN_H

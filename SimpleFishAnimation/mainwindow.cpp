@@ -53,6 +53,8 @@ MainWindow::MainWindow(QWidget *parent) :
     pillar1 = new Pillar();
     pillar2 = new Pillar();
 
+    feeding_button1 = new QPushButton();
+
     //mouse coordinates
     mouse_cord.setX(0);
     mouse_cord.setY(0);
@@ -74,6 +76,7 @@ MainWindow::MainWindow(QWidget *parent) :
     pillar1->set_label(findChild<QLabel*>("pillar1"));
     pillar2->set_label(findChild<QLabel*>("pillar2"));
 
+    feeding_button1 = (findChild<QPushButton*>("feeding_button"));
 
     mainFish->set_fish(findChild<QLabel*>("Fish"));
     mainFish->sprite_setup();
@@ -96,12 +99,15 @@ MainWindow::MainWindow(QWidget *parent) :
     //new_bubbles_timer
     QTimer *timer = new QTimer(this);
     QTimer *animations_timer = new QTimer(this);
+    QTimer *feeding_timer = new QTimer(this);
     //QTimer *new_bubbles_timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(movement_logic()));
     connect(animations_timer, SIGNAL(timeout()), this, SLOT(next_frame()));
+    connect(feeding_timer, SIGNAL(timeout()), this, SLOT(feeding_check()));
     //connect(new_bubbles_timer, SIGNAL(timeout()), this, SLOT(next_frame()));
     timer->start(10);
     animations_timer->start(500);
+    feeding_timer->start(1000);
     //new_bubbles_timer->start(100);
 }
 
@@ -287,6 +293,22 @@ void MainWindow::on_start_button_clicked(){
 }
 
 /*Main Screen Inputs*/
+//feeding_check assures the user that the fish is not overly hungry.
+//if the fish needs food, the feeding button will blink
+void MainWindow::feeding_check(){
+    static bool blink = false;
+    if (mainFish->get_hunger() >= 1.0 && blink == false){
+        feeding_button1->setStyleSheet((QString)"background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 grey, stop:1 black);\nfont: 75 auto 'MS Serif';\ncolor: white");
+        feeding_button1->setGeometry(27, 27, 80, 28);
+        blink = true;
+    }
+    else if (mainFish->get_hunger() >= 1.0 && blink == true){
+        feeding_button1->setStyleSheet((QString)"background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 white, stop:1 grey);\nfont: 75 auto 'MS Serif';\ncolor: black");
+        feeding_button1->setGeometry(30, 30, 75, 23);
+        blink = false;
+    }
+}
+
 void MainWindow::on_to_settings_button_clicked(){
     sound_fx->setMedia(QUrl("qrc:/sound/click.mp3"));
     sound_fx->play();
