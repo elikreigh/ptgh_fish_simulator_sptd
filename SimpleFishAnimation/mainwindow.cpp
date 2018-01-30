@@ -154,31 +154,6 @@ void MainWindow::movement_logic(){
             sound_fx->setMedia(QUrl("qrc:/sound/munch.mp3"));
             sound_fx->play();
         }
-        /*if(ui->stackedWidget->currentIndex() == 1 && mainFish->get_brain().getState() == Move){
-            Fish *test_fish = new Fish(mainFish);
-            enum Move_Type direction;
-            test_fish->swim();
-            direction = (test_fish->get_brain()).getDirection();
-            if(test_fish->no_over_lap(pile)){
-                if(direction == Left || direction == UpLeft || direction == DownLeft){
-                    mainFish->set_left(true);
-                }
-                else if(direction == Right || direction == UpRight || direction == DownRight){
-                    mainFish->set_left(false);
-                } else {
-                    mainFish->set_left(mainFish->get_face_left());
-                }
-                mainFish->get_brain().set_direction(direction);
-                mainFish->swim(direction);
-                if(mainFish->eat_food(food)){
-                    food->eaten();
-                    sound_fx->setMedia(QUrl("qrc:/sound/munch.mp3"));
-                    sound_fx->play();
-                }
-            }
-            test_fish->~Fish();
-            //mainFish->swim(DownRight);
-        }*/
         single_bubble1->float_up();
         if(food->no_over_lap(pile)){
             food->sink();
@@ -234,54 +209,6 @@ void MainWindow::mousePressEvent(QMouseEvent *event){
         mouse_cord = event->pos();
         mainFish->frighten(mouse_cord);
         qDebug() << "After Click Event";
-        /*enum Move_Type direction;
-        if(mainFish->get_x() < mouse_cord.x() && mainFish->get_y() < mouse_cord.y()){
-            direction = UpLeft;
-        }
-        else if(mainFish->get_x() == mouse_cord.x() && mainFish->get_y() > mouse_cord.y()){
-            direction = Up;
-        }
-        else if(mainFish->get_x() > mouse_cord.x() && mainFish->get_y() > mouse_cord.y()){
-            direction = UpRight;
-        }
-        else if(mainFish->get_x() > mouse_cord.x() && mainFish->get_y() == mouse_cord.y()){
-            direction = Right;
-        }
-        else if(mainFish->get_x() < mouse_cord.x() && mainFish->get_y() < mouse_cord.y()){
-            direction = DownRight;
-        }
-        else if(mainFish->get_x() == mouse_cord.x() && mainFish->get_y() < mouse_cord.y()){
-            direction = Down;
-        }
-        else if(mainFish->get_x() > mouse_cord.x() && mainFish->get_y() < mouse_cord.y()){
-            direction = DownLeft;
-        }
-        else if(mainFish->get_x() < mouse_cord.x() && mainFish->get_y() == mouse_cord.y()){
-            direction = Left;
-        }
-
-        Fish *test_fish = new Fish(mainFish);
-        test_fish->test_swim(direction);
-        if(test_fish->no_over_lap(pile)){
-            if(direction == Left || direction == UpLeft || direction == DownLeft){
-                mainFish->set_left(true);
-            }
-            else if(direction == Right || direction == UpRight || direction == DownRight){
-                mainFish->set_left(false);
-            } else {
-                mainFish->set_left(mainFish->get_face_left());
-            }
-            mainFish->get_brain().set_direction(direction);
-            mainFish->swim(direction);
-            if(mainFish->eat_food(food)){
-                food->eaten();
-                sound_fx->setMedia(QUrl("qrc:/sound/munch.mp3"));
-                sound_fx->play();
-            }
-
-            mainFish->get_brain().set_state(Scared);
-        }
-        test_fish->~Fish();*/
     }
 }
 

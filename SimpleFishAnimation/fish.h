@@ -25,10 +25,13 @@ public:
     int get_x();
     int get_y();
     bool get_face_left();
+    bool get_face_forward();
     QLabel* get_label();
     float get_hunger();
     void set_left(bool lft);
     void set_left(Move_Type dir);
+    void set_forward(bool frwd);
+    void set_forward(Move_Type dir);
     void frighten(QPoint mouse_cord);
     void feeding();
     brain get_brain();
@@ -45,6 +48,7 @@ private:
     QPixmap current_pixmap;
     int sprite_index;
     bool face_left;
+    bool face_forward;
     brain *f_brain;
 };
 

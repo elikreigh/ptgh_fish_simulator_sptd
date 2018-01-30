@@ -31,15 +31,16 @@ public:
     void setY(int new_y);
     void setDestination();
     void setDestination(QPoint dest);
+    void setDestination(QPoint dest, float destdepth);
     void setDestination(Interferences* pile[3]);
     void set_fwidth(int width);
     void set_fheight(int height);
     void set_direction(Move_Type direction);
     void set_state(Move_State state);
-    int getDepth();
-    int getPrevDepth();
-    void setDepth(int dpth);
-    void setPrevDepth(int dpth);
+    float getDepth();
+    float getPrevDepth();
+    void setDepth(float dpth);
+    void setPrevDepth(float dpth);
     void resetPrevDepth();
     int getX();
     int getY();
@@ -64,9 +65,9 @@ private:
     QPoint place;
     QPoint destination;
 
-    int destdepth;
-    int depth;
-    int prevdepth;
+    float destdepth;
+    float depth;
+    float prevdepth;
     int max_height;
     int max_width;
     int fish_height;
