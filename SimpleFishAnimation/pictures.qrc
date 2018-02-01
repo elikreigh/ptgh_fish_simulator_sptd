@@ -10,5 +10,7 @@
         <file>FishIdle.png</file>
         <file>TemporaryFish.png</file>
         <file>Pillar.png</file>
+        <file>ForwardFishFinUp.png</file>
+        <file>ForwardFishIdle.png</file>
     </qresource>
 </RCC>

@@ -6,15 +6,16 @@
 
 Fish::Fish(int window_width, int window_height){
     this->face_left = true;
+    this->face_forward = false;
     sprite_index = 0;
     f_brain = new brain(window_width,window_height);
 }
 
 Fish::Fish(Fish *newFish){
-    face_left = true;
     sprite_index = 0;
     f_brain = new brain(newFish->get_brain());
     this->set_left(newFish->get_face_left());
+    this->set_forward(newFish->get_face_forward());
 }
 
 brain Fish::get_brain(){
@@ -32,6 +33,10 @@ int Fish::get_y(){
 
 bool Fish::get_face_left(){
     return face_left;
+}
+
+bool Fish::get_face_forward(){
+    return face_forward;
 }
 
 QLabel* Fish::get_label(){
@@ -64,6 +69,7 @@ void Fish::sprite_setup(){
 void Fish::logic(Interferences* pile[3]){
     this->f_brain->decisionState(pile);
     this->set_left(f_brain->getDirection());
+    this->set_forward(f_brain->getDirection());
     this->sprite_swim();
 }
 
@@ -71,14 +77,29 @@ void Fish::set_left(bool lft){
     face_left = lft;
 }
 
+void Fish::set_forward(bool frwd){
+    face_forward = frwd;
+}
+
 void Fish::set_left(Move_Type dir){
-    if(dir == Left || dir == UpLeft || dir == DownLeft || dir == ALeft || dir == AUpLeft || dir == ADownLeft || dir == TLeft || dir == TUpLeft || dir == TDownLeft){
+    if(dir == Left || dir == UpLeft || dir == DownLeft){
         face_left = true;
     }
-    else if(dir == Right || dir == UpRight || dir == DownRight || dir == ARight || dir == AUpRight || dir == ADownRight || dir == TRight || dir == TUpRight || dir == TDownRight){
+    else if(dir == Right || dir == UpRight || dir == DownRight){
         face_left = false;
     } else {
         face_left = face_left;
+    }
+}
+
+void Fish::set_forward(Move_Type dir){
+    if(dir == TLeft || dir == TUpLeft || dir == TDownLeft || dir == TUp || dir == TDown){
+        face_forward = true;
+    }
+    else if(dir == ARight || dir == AUpRight || dir == ADownRight || dir == AUp || dir == ADown){
+        face_forward = false;
+    } else {
+        face_forward = face_forward;
     }
 }
 
@@ -161,29 +182,47 @@ void Fish::cycle_sprite(){
     //Flips QPixmap if right
     //Frames will be moved to an attribute of fish and not individually cycled
 
+    qDebug() << "depth: " << f_brain->getDepth();
+    qDebug() << "prevdepth: " <<f_brain->getPrevDepth();
+    qDebug() << "destdepht: " <<f_brain->getDestDepth();
+    qDebug() << "\n";
+
     if(f_brain->getDepth() < f_brain->getPrevDepth()){
         ui_fish->resize(ui_fish->width()+2, ui_fish->height()+1);
+        if(sprite_index == 1){
+            ui_fish->setPixmap(QPixmap(":/pictures/ForwardFishFinUp.png"));
+        }
+        else{
+            ui_fish->setPixmap(QPixmap(":/pictures/ForwardFishIdle.png"));
+        }
         this->f_brain->resetPrevDepth();
     }
     else if(f_brain->getDepth() > f_brain->getPrevDepth()){
         ui_fish->resize(ui_fish->width()-2, ui_fish->height()-1);
+        if(sprite_index == 1){
+            ui_fish->setPixmap(QPixmap(":/pictures/ForwardFishFinUp.png"));
+        }
+        else{
+            ui_fish->setPixmap(QPixmap(":/pictures/ForwardFishIdle.png"));
+        }
         this->f_brain->resetPrevDepth();
     }
-
-    if(face_left){
-        if(sprite_index == 1){
-            ui_fish->setPixmap(QPixmap(":/pictures/FishFinUp.png"));
+    else {
+        if(face_left){
+            if(sprite_index == 1){
+                ui_fish->setPixmap(QPixmap(":/pictures/FishFinUp.png"));
+            }
+            else{
+                ui_fish->setPixmap(QPixmap(":/pictures/FishIdle.png"));
+            }
         }
-        else{
-            ui_fish->setPixmap(QPixmap(":/pictures/FishIdle.png"));
-        }
-    }
-    else{
-        if(sprite_index == 1){
-            ui_fish->setPixmap(QPixmap::fromImage(QPixmap(":/pictures/FishFinUp.png").toImage().mirrored(true, false)));
-        }
-        else{
-            ui_fish->setPixmap(QPixmap::fromImage(QPixmap(":/pictures/FishIdle.png").toImage().mirrored(true, false)));
+        else if (!face_left){
+            if(sprite_index == 1){
+                ui_fish->setPixmap(QPixmap::fromImage(QPixmap(":/pictures/FishFinUp.png").toImage().mirrored(true, false)));
+            }
+            else{
+                ui_fish->setPixmap(QPixmap::fromImage(QPixmap(":/pictures/FishIdle.png").toImage().mirrored(true, false)));
+            }
         }
     }
 

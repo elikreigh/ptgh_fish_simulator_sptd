@@ -22,6 +22,7 @@
 brain::brain(){
     destination.setX(0);
     destination.setY(0);
+    destdepth = 0;
     place.setX(50);
     place.setY(10);
     max_width = 1000;
@@ -33,7 +34,7 @@ brain::brain(){
     fish_speed = 1;
     current_state = Idle;
     direction = Up;
-    depth = 5;
+    depth = 10;
     prevdepth = depth;
 }
 
@@ -41,6 +42,7 @@ brain::brain(){
 brain::brain(int width, int height){
     destination.setX(0);
     destination.setY(0);
+    destdepth = 0;
     place.setX(50);
     place.setY(10);
     max_width = width-131;
@@ -50,7 +52,7 @@ brain::brain(int width, int height){
     fish_speed = 1;
     current_state = Idle;
     direction = Up;
-    depth = 5;
+    depth = 10;
     prevdepth = depth;
 }
 
@@ -58,7 +60,7 @@ brain::brain(int width, int height){
 brain::brain(brain *other){
     place.setX(other->place.x());
     place.setY(other->place.y());
-    this->setDestination(other->get_destination());
+    this->setDestination(other->get_destination(), other->getDepth());
     max_width = other->max_width;
     max_height = other->max_height;
     fish_height = other->fish_height;
@@ -89,12 +91,16 @@ int brain::getY(){
     return place.y();
 }
 
-int brain::getDepth(){
+float brain::getDepth(){
     return depth;
 }
 
-int brain::getPrevDepth(){
+float brain::getPrevDepth(){
     return prevdepth;
+}
+
+float brain::getDestDepth(){
+    return destdepth;
 }
 
 float brain::getHunger(){
@@ -105,8 +111,8 @@ float brain::getHunger(){
 void brain::setX(int new_x){
     if (new_x < 10) place.setX(10);
     else if (new_x > max_width-fish_width-10){
-        qDebug() << "new_x: " << new_x;
-        qDebug() << "max_width: " << max_width << "\nfish_width: " << fish_width;
+        //qDebug() << "new_x: " << new_x;
+        //qDebug() << "max_width: " << max_width << "\nfish_width: " << fish_width;
         place.setX(max_width-fish_width-10);
     }
     else place.setX(new_x);
@@ -116,20 +122,20 @@ void brain::setX(int new_x){
 void brain::setY(int new_y){
     if (new_y < 10) place.setY(10);
     else if (new_y > max_height-fish_height-100){
-        qDebug() << "new_y: " << new_y;
-        qDebug() << "max_width: " << max_height << "\nfish_width: " << fish_height;
+        //qDebug() << "new_y: " << new_y;
+        //qDebug() << "max_width: " << max_height << "\nfish_width: " << fish_height;
         place.setY(max_height-fish_height-100);
     }
     else place.setY(new_y);
 }
 
-void brain::setDepth(int dpth){
+void brain::setDepth(float dpth){
     if (this->getDepth() <= 9 && this->getDepth() >= 0){
         prevdepth = depth;
         depth = dpth;
     }
     else {
-        depth--;
+        depth-=.2;
         prevdepth = depth;
     }
 }
@@ -144,10 +150,22 @@ void brain::setDestination(){
     destdepth = (rand()%10);
 }
 
+//Used in click events
+//Placement of click will determine opposite position around fishes current location
+//Distance away will be determined by closeness of click to current position
 void brain::setDestination(QPoint dest){
+    int distanceX = (dest.x());// - this->getX())*-1);///(abs(dest.x()-this->getX()));
+    int distanceY = (dest.y());// - this->getY())*-1);///(abs(dest.y()-this->getY()));
+
+    destination.setX((distanceX)%(max_width-fish_width*2));
+    destination.setY((distanceY)%(max_height-fish_height*2));
+    destdepth = (rand()%10);
+}
+
+void brain::setDestination(QPoint dest, float destdepth){
     destination.setX(dest.x()%(max_width-fish_width*2));
     destination.setY(dest.y()%(max_height-fish_height*2));
-    destdepth = (rand()%10);
+    this->destdepth = destdepth;
 }
 
 void brain::setDestination(Interferences* pile[3]){
@@ -281,82 +299,82 @@ void brain::move(Move_Type dir){
         case(AUp):
             place.setY(place.y() - fish_speed);
             place.setX(place.x());
-            this->setDepth(this->getDepth()+1);
+            this->setDepth(this->getDepth()+.2);
             break;
         case(ADown):
             place.setY(place.y() + fish_speed);
             place.setX(place.x());
-            this->setDepth(this->getDepth()+1);
+            this->setDepth(this->getDepth()+.2);
             break;
         case(ALeft):
             place.setX(place.x() - fish_speed);
             place.setY(place.y());
-            this->setDepth(this->getDepth()+1);
+            this->setDepth(this->getDepth()+.2);
             break;
         case(ARight):
             place.setX(place.x() + fish_speed);
             place.setY(place.y());
-            this->setDepth(this->getDepth()+1);
+            this->setDepth(this->getDepth()+.2);
             break;
         case(AUpLeft):
             place.setX(place.x() - fish_speed);
             place.setY(place.y() - fish_speed);
-            this->setDepth(this->getDepth()+1);
+            this->setDepth(this->getDepth()+.2);
             break;
         case(AUpRight):
             place.setX(place.x() + fish_speed);
             place.setY(place.y() - fish_speed);
-            this->setDepth(this->getDepth()+1);
+            this->setDepth(this->getDepth()+.2);
             break;
         case(ADownLeft):
             place.setX(place.x() - fish_speed);
             place.setY(place.y() + fish_speed);
-            this->setDepth(this->getDepth()+1);
+            this->setDepth(this->getDepth()+.2);
             break;
         case(ADownRight):
             place.setX(place.x() + fish_speed);
             place.setY(place.y() + fish_speed);
-            this->setDepth(this->getDepth()+1);
+            this->setDepth(this->getDepth()+.2);
             break;
         case(TUp):
             place.setY(place.y() - fish_speed);
             place.setX(place.x());
-            this->setDepth(this->getDepth()-1);
+            this->setDepth(this->getDepth()-.2);
             break;
         case(TDown):
             place.setY(place.y() + fish_speed);
             place.setX(place.x());
-            this->setDepth(this->getDepth()-1);
+            this->setDepth(this->getDepth()-.2);
             break;
         case(TLeft):
             place.setX(place.x() - fish_speed);
             place.setY(place.y());
-            this->setDepth(this->getDepth()-1);
+            this->setDepth(this->getDepth()-.2);
             break;
         case(TRight):
             place.setX(place.x() + fish_speed);
             place.setY(place.y());
-            this->setDepth(this->getDepth()-1);
+            this->setDepth(this->getDepth()-.2);
             break;
         case(TUpLeft):
             place.setX(place.x() - fish_speed);
             place.setY(place.y() - fish_speed);
-            this->setDepth(this->getDepth()-1);
+            this->setDepth(this->getDepth()-.2);
             break;
         case(TUpRight):
             place.setX(place.x() + fish_speed);
             place.setY(place.y() - fish_speed);
-            this->setDepth(this->getDepth()-1);
+            this->setDepth(this->getDepth()-.2);
             break;
         case(TDownLeft):
             place.setX(place.x() - fish_speed);
             place.setY(place.y() + fish_speed);
-            this->setDepth(this->getDepth()-1);
+            this->setDepth(this->getDepth()-.2);
             break;
         case(TDownRight):
             place.setX(place.x() + fish_speed);
             place.setY(place.y() + fish_speed);
-            this->setDepth(this->getDepth()-1);
+            this->setDepth(this->getDepth()-.2);
             break;
     }
     this->direction = dir;
@@ -404,87 +422,87 @@ void brain::move(Interferences* pile[3]){
                 case(AUp):
                     place.setY(place.y() - fish_speed);
                     place.setX(place.x());
-                    this->setDepth(this->getDepth()+1);
+                    this->setDepth(this->getDepth()+.2);
                     break;
                 case(ADown):
                     place.setY(place.y() + fish_speed);
                     place.setX(place.x());
-                    this->setDepth(this->getDepth()+1);
+                    this->setDepth(this->getDepth()+.2);
                     break;
                 case(ALeft):
                     place.setX(place.x() - fish_speed);
                     place.setY(place.y());
-                    this->setDepth(this->getDepth()+1);
+                    this->setDepth(this->getDepth()+.2);
                     break;
                 case(ARight):
                     place.setX(place.x() + fish_speed);
                     place.setY(place.y());
-                    this->setDepth(this->getDepth()+1);
+                    this->setDepth(this->getDepth()+.2);
                     break;
                 case(AUpLeft):
                     place.setX(place.x() - fish_speed);
                     place.setY(place.y() - fish_speed);
-                    this->setDepth(this->getDepth()+1);
+                    this->setDepth(this->getDepth()+.2);
                     break;
                 case(AUpRight):
                     place.setX(place.x() + fish_speed);
                     place.setY(place.y() - fish_speed);
-                    this->setDepth(this->getDepth()+1);
+                    this->setDepth(this->getDepth()+.2);
                     break;
                 case(ADownLeft):
                     place.setX(place.x() - fish_speed);
                     place.setY(place.y() + fish_speed);
-                    this->setDepth(this->getDepth()+1);
+                    this->setDepth(this->getDepth()+.2);
                     break;
                 case(ADownRight):
                     place.setX(place.x() + fish_speed);
                     place.setY(place.y() + fish_speed);
-                    this->setDepth(this->getDepth()+1);
+                    this->setDepth(this->getDepth()+.2);
                     break;
                 case(TUp):
                     place.setY(place.y() - fish_speed);
                     place.setX(place.x());
-                    this->setDepth(this->getDepth()-1);
+                    this->setDepth(this->getDepth()-.2);
                     break;
                 case(TDown):
                     place.setY(place.y() + fish_speed);
                     place.setX(place.x());
-                    this->setDepth(this->getDepth()-1);
+                    this->setDepth(this->getDepth()-.2);
                     break;
                 case(TLeft):
                     place.setX(place.x() - fish_speed);
                     place.setY(place.y());
-                    this->setDepth(this->getDepth()-1);
+                    this->setDepth(this->getDepth()-.2);
                     break;
                 case(TRight):
                     place.setX(place.x() + fish_speed);
                     place.setY(place.y());
-                    this->setDepth(this->getDepth()-1);
+                    this->setDepth(this->getDepth()-.2);
                     break;
                 case(TUpLeft):
                     place.setX(place.x() - fish_speed);
                     place.setY(place.y() - fish_speed);
-                    this->setDepth(this->getDepth()-1);
+                    this->setDepth(this->getDepth()-.2);
                     break;
                 case(TUpRight):
                     place.setX(place.x() + fish_speed);
                     place.setY(place.y() - fish_speed);
-                    this->setDepth(this->getDepth()-1);
+                    this->setDepth(this->getDepth()-.2);
                     break;
                 case(TDownLeft):
                     place.setX(place.x() - fish_speed);
                     place.setY(place.y() + fish_speed);
-                    this->setDepth(this->getDepth()-1);
+                    this->setDepth(this->getDepth()-.2);
                     break;
                 case(TDownRight):
                     place.setX(place.x() + fish_speed);
                     place.setY(place.y() + fish_speed);
-                    this->setDepth(this->getDepth()-1);
+                    this->setDepth(this->getDepth()-.2);
                     break;
             }
         }
         else {
-            this->setDepth(this->getDepth()+1);
+            this->setDepth(this->getDepth()+.2);
         }
         this->increase_hunger();
 }
@@ -548,7 +566,7 @@ void brain::decisionState(Interferences* pile[3]){
                 this->move(Up);
             }
             bob_counter++;
-            qDebug() << "hunger" << hunger;
+            //qDebug() << "hunger" << hunger;
             //qDebug() << "After Idle" << this->getX() << " " << this->getY() << "\nFish Dest: " << this->get_destination().x() << " " << this->get_destination().y();
                     break;
         case (DecideMove):
@@ -561,7 +579,7 @@ void brain::decisionState(Interferences* pile[3]){
             this->move(pile);
             //qDebug() << "After Move\nFish Pos: " << this->getX() << " " << this->getY() << "\nFish Dest: " << this->get_destination().x() << " " << this->get_destination().y();
             //start moving towards destination
-            qDebug() << "hunger " << hunger;
+            //qDebug() << "hunger " << hunger;
                     break;
         case (Scared):
             fish_speed = 3;
@@ -571,7 +589,7 @@ void brain::decisionState(Interferences* pile[3]){
             this->setDestination(pile);
             this->decisionDirection();
             this->move(pile);
-            qDebug() << "hunger " << hunger;
+            //qDebug() << "hunger " << hunger;
                     break;
     }
     this->changeState(driver, pile);
@@ -595,28 +613,28 @@ void brain::decisionState(Interferences* pile[3]){
 }
 
 void brain::decisionDirection(){
-    if(destination.x() < place.x() && destination.y() < place.y() && destdepth == depth){
+    if(destination.x() < place.x() && destination.y() < place.y() && (destdepth >= depth-.1 && destdepth <= depth+1)){
         direction = UpLeft;
     }
-    else if(destination.x() == place.x() && destination.y() < place.y() && destdepth == depth){
+    else if(destination.x() == place.x() && destination.y() < place.y() && (destdepth >= depth-.1 && destdepth <= depth+1)){
         direction = Up;
     }
-    else if(destination.x() > place.x() && destination.y() < place.y() && destdepth == depth){
+    else if(destination.x() > place.x() && destination.y() < place.y() && (destdepth >= depth-.1 && destdepth <= depth+1)){
         direction = UpRight;
     }
-    else if(destination.x() > place.x() && destination.y() == place.y() && destdepth == depth){
+    else if(destination.x() > place.x() && destination.y() == place.y() && (destdepth >= depth-.1 && destdepth <= depth+1)){
         direction = Right;
     }
-    else if(destination.x() > place.x() && destination.y() > place.y() && destdepth == depth){
+    else if(destination.x() > place.x() && destination.y() > place.y() && (destdepth >= depth-.1 && destdepth <= depth+1)){
         direction = DownRight;
     }
-    else if(destination.x() == place.x() && destination.y() > place.y() && destdepth == depth){
+    else if(destination.x() == place.x() && destination.y() > place.y() && (destdepth >= depth-.1 && destdepth <= depth+1)){
         direction = Down;
     }
-    else if(destination.x() < place.x() && destination.y() > place.y() && destdepth == depth){
+    else if(destination.x() < place.x() && destination.y() > place.y() && (destdepth >= depth-.1 && destdepth <= depth+1)){
         direction = DownLeft;
     }
-    else if(destination.x() < place.x() && destination.y() == place.y() && destdepth == depth){
+    else if(destination.x() < place.x() && destination.y() == place.y() && (destdepth >= depth-.1 && destdepth <= depth+1)){
         direction = Left;
     }
     else if(destination.x() < place.x() && destination.y() < place.y() && destdepth > depth){
