@@ -39,7 +39,6 @@ public:
     void sprite_setup();
     bool no_over_lap(Interferences* pile[3]);
     bool eat_food(Interferences* pile[3]);
-    void run(QPoint mouse_cord);
 
     void logic(Interferences* pile[3]);
 

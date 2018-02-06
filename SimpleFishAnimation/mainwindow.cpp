@@ -43,7 +43,9 @@ MainWindow::MainWindow(QWidget *parent) :
     splash_floater6 = new FloatingBubbles();
 
     //Fish and Bubbles and Food and Pillars for tank screen
-    mainFish = new Fish(this->width(),this->height());
+    qDebug() << "frame_width: " << findChild<QFrame*>("frame_2")->width();
+    qDebug() << "frame_height: " << findChild<QFrame*>("frame_2")->height();
+    mainFish = new Fish(findChild<QFrame*>("frame_2")->width(), findChild<QFrame*>("frame_2")->height());
     bubble1 = new Bubbles();
     bubble2 = new Bubbles();
     single_bubble1 = new FloatingBubbles();
@@ -97,15 +99,15 @@ MainWindow::MainWindow(QWidget *parent) :
     //timer: starting move events
     //animations_timer cycles fish sprite, can be included with the moving animation
     //new_bubbles_timer
-    QTimer *timer = new QTimer(this);
+    QTimer *logic_timer = new QTimer(this);
     QTimer *animations_timer = new QTimer(this);
     QTimer *feeding_timer = new QTimer(this);
     //QTimer *new_bubbles_timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(movement_logic()));
+    connect(logic_timer, SIGNAL(timeout()), this, SLOT(movement_logic()));
     connect(animations_timer, SIGNAL(timeout()), this, SLOT(next_frame()));
     connect(feeding_timer, SIGNAL(timeout()), this, SLOT(feeding_check()));
     //connect(new_bubbles_timer, SIGNAL(timeout()), this, SLOT(next_frame()));
-    timer->start(10);
+    logic_timer->start(10);
     animations_timer->start(500);
     feeding_timer->start(1000);
     //new_bubbles_timer->start(100);
@@ -189,7 +191,7 @@ void MainWindow::next_frame(){
         splash_floater6->cycle_sprite();
     }
     else if(ui->stackedWidget->currentIndex() == 1){
-        mainFish->cycle_sprite();
+        //mainFish->cycle_sprite();
         bubble1->cycle_sprite();
         bubble2->cycle_sprite();
         /*if(findChild<QLabel*>("single_bubble1") != 0){

@@ -25,8 +25,8 @@ brain::brain(){
     destdepth = 0;
     place.setX(50);
     place.setY(10);
-    max_width = 1000;
-    max_height = 1000;
+    max_width = 1151;
+    max_height = 621;
     fish_width = 100;
     fish_height = 50;
     hunger = 0;
@@ -34,7 +34,7 @@ brain::brain(){
     fish_speed = 1;
     current_state = Idle;
     direction = Up;
-    depth = 10;
+    depth = 5;
     prevdepth = depth;
 }
 
@@ -52,7 +52,7 @@ brain::brain(int width, int height){
     fish_speed = 1;
     current_state = Idle;
     direction = Up;
-    depth = 10;
+    depth = 5;
     prevdepth = depth;
 }
 
@@ -109,10 +109,10 @@ float brain::getHunger(){
 
 //Function to change the x attribute of the fish
 void brain::setX(int new_x){
-    if (new_x < 10) place.setX(10);
+    if (new_x < 10+fish_width) place.setX(10+fish_width);
     else if (new_x > max_width-fish_width-10){
-        //qDebug() << "new_x: " << new_x;
-        //qDebug() << "max_width: " << max_width << "\nfish_width: " << fish_width;
+        qDebug() << "new_x: " << new_x;
+        qDebug() << "max_width: " << max_width << "\nfish_width: " << fish_width;
         place.setX(max_width-fish_width-10);
     }
     else place.setX(new_x);
@@ -120,10 +120,10 @@ void brain::setX(int new_x){
 
 //Function to change the y attribute of the fish
 void brain::setY(int new_y){
-    if (new_y < 10) place.setY(10);
+    if (new_y < 10+fish_height) place.setY(10+fish_height);
     else if (new_y > max_height-fish_height-100){
-        //qDebug() << "new_y: " << new_y;
-        //qDebug() << "max_width: " << max_height << "\nfish_width: " << fish_height;
+        qDebug() << "new_y: " << new_y;
+        qDebug() << "max_height: " << max_height << "\nfish_width: " << fish_height;
         place.setY(max_height-fish_height-100);
     }
     else place.setY(new_y);
@@ -150,18 +150,6 @@ void brain::setDestination(){
     destdepth = (rand()%10);
 }
 
-//Used in click events
-//Placement of click will determine opposite position around fishes current location
-//Distance away will be determined by closeness of click to current position
-void brain::setDestination(QPoint dest){
-    int distanceX = (dest.x());// - this->getX())*-1);///(abs(dest.x()-this->getX()));
-    int distanceY = (dest.y());// - this->getY())*-1);///(abs(dest.y()-this->getY()));
-
-    destination.setX((distanceX)%(max_width-fish_width*2));
-    destination.setY((distanceY)%(max_height-fish_height*2));
-    destdepth = (rand()%10);
-}
-
 void brain::setDestination(QPoint dest, float destdepth){
     destination.setX(dest.x()%(max_width-fish_width*2));
     destination.setY(dest.y()%(max_height-fish_height*2));
@@ -172,6 +160,56 @@ void brain::setDestination(Interferences* pile[3]){
     destination.setX(pile[2]->get_left());
     destination.setY(pile[2]->get_top());
     destdepth = pile[2]->get_depth();
+}
+
+void brain::setDestination(int new_x, int new_y){
+    if (new_x < 10) destination.setX(10);
+    else if (new_x > max_width){
+        destination.setX(max_width);
+    }
+    else destination.setX(new_x);
+
+    if (new_y < 10) destination.setY(10);
+    else if (new_y > max_height-100){
+        destination.setY(max_height-100);
+    }
+    else destination.setY(new_y);
+
+    destdepth= rand()%10;
+}
+
+//Used in click events
+//Placement of click will determine opposite position around fishes current location
+//Distance away will be determined by closeness of click to current position
+void brain::runFromMouseClick(QPoint dest){
+    int distanceX = dest.x();//(abs(dest.x()-this->getX()));
+    int distanceY = dest.y();//(abs(dest.y()-this->getY()));
+
+    //Destination will follow this pattern with values corresponding
+    //to distance away from mouse 180 deg around fish location
+    /*if(dest.x() <= getX()+fish_width/2) {
+
+        if(dest.y() <= getY()+fish_height/2) {
+            setDestination(1000, 500);
+        }
+        else {
+            setDestination(1000, 100);
+        }
+    }
+    else {
+        if(dest.y() <= getY()+fish_height/2) {
+            setDestination(50, 500);
+        }
+        else {
+            setDestination(50, 500);
+        }
+
+    }*/
+
+    setDestination(distanceX, distanceY);
+
+    //Runs back to depths 5 to 9
+    destdepth = rand()%6 + 4;
 }
 
 void brain::increase_hunger(){

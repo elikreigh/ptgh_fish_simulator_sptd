@@ -30,9 +30,10 @@ public:
     void setX(int new_x);
     void setY(int new_y);
     void setDestination();
-    void setDestination(QPoint dest);
     void setDestination(QPoint dest, float destdepth);
+    void setDestination(int new_x, int new_y);
     void setDestination(Interferences* pile[3]);
+    void runFromMouseClick(QPoint dest);
     void set_fwidth(int width);
     void set_fheight(int height);
     void set_direction(Move_Type direction);

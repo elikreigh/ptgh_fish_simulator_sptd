@@ -104,7 +104,7 @@ void Fish::set_forward(Move_Type dir){
 }
 
 void Fish::frighten(QPoint mouse_cord){
-    f_brain->setDestination(mouse_cord);
+    f_brain->runFromMouseClick(mouse_cord);
     f_brain->set_state(Scared);
 }
 
@@ -120,13 +120,20 @@ void Fish::swim(){
 }
 
 void Fish::swim(Move_Type direction){
+    static int cycle = 0;
     this->cycle_sprite();
     f_brain->decisionDirection(direction);
     ui_fish->move(f_brain->getX(), f_brain->getY());
 }
 
 void Fish::sprite_swim(){
-    this->cycle_sprite();
+    static int cycle = 0;
+    if(cycle >= 10){
+        this->cycle_sprite();
+        cycle=0;
+    }
+    cycle++;
+
     ui_fish->move(f_brain->getX(), f_brain->getY());
 }
 
@@ -134,61 +141,20 @@ void Fish::test_swim(Move_Type direction){
     /*f_brain->move(direction);*/
 }
 
-void Fish::run(QPoint mouse_cord){
-    /*enum Move_Type direction;
-    if(ui_fish->x() < mouse_cord.x() && ui_fish->y() < mouse_cord.y()){
-        direction = UpLeft;
-    }
-    else if(ui_fish->x() == mouse_cord.x() && ui_fish->y() > mouse_cord.y()){
-        direction = Up;
-    }
-    else if(ui_fish->x() > mouse_cord.x() && ui_fish->y() > mouse_cord.y()){
-        direction = UpRight;
-    }
-    else if(ui_fish->x() > mouse_cord.x() && ui_fish->y() == mouse_cord.y()){
-        direction = Right;
-    }
-    else if(ui_fish->x() < mouse_cord.x() && ui_fish->y() < mouse_cord.y()){
-        direction = DownRight;
-    }
-    else if(ui_fish->x() == mouse_cord.x() && ui_fish->y() < mouse_cord.y()){
-        direction = Down;
-    }
-    else if(ui_fish->x() > mouse_cord.x() && ui_fish->y() < mouse_cord.y()){
-        direction = DownLeft;
-    }
-    else if(ui_fish->x() < mouse_cord.x() && ui_fish->y() == mouse_cord.y()){
-        direction = Left;
-    }
-
-    Fish *test_fish = new Fish(this);
-    test_fish->swim(direction);
-    if(test_fish->no_over_lap(pile)){
-        if(direction == Left || direction == UpLeft || direction == DownLeft){
-            this->set_left(true);
-        }
-        else if(direction == Right || direction == UpRight || direction == DownRight){
-            this->set_left(false);
-        } else {
-            this->set_left(this->get_face_left());
-        }
-        this->get_brain().set_direction(direction);
-    }
-    test_fish->~Fish();*/
-}
-
 void Fish::cycle_sprite(){
     //Default sprite is idle, toggles between fin states
     //Flips QPixmap if right
     //Frames will be moved to an attribute of fish and not individually cycled
 
-    qDebug() << "depth: " << f_brain->getDepth();
+    /*qDebug() << "depth: " << f_brain->getDepth();
     qDebug() << "prevdepth: " <<f_brain->getPrevDepth();
     qDebug() << "destdepht: " <<f_brain->getDestDepth();
-    qDebug() << "\n";
+    qDebug() << "\n";*/
 
     if(f_brain->getDepth() < f_brain->getPrevDepth()){
-        ui_fish->resize(ui_fish->width()+2, ui_fish->height()+1);
+        ui_fish->resize(ui_fish->width()+4, ui_fish->height()+2);
+        qDebug() << "width: " << ui_fish->width();
+        qDebug() << "height: " << ui_fish->height();
         if(sprite_index == 1){
             ui_fish->setPixmap(QPixmap(":/pictures/ForwardFishFinUp.png"));
         }
@@ -198,16 +164,20 @@ void Fish::cycle_sprite(){
         this->f_brain->resetPrevDepth();
     }
     else if(f_brain->getDepth() > f_brain->getPrevDepth()){
-        ui_fish->resize(ui_fish->width()-2, ui_fish->height()-1);
+        ui_fish->resize(ui_fish->width()-4, ui_fish->height()-2);
+        qDebug() << "width: " << ui_fish->width();
+        qDebug() << "height: " << ui_fish->height();
         if(sprite_index == 1){
-            ui_fish->setPixmap(QPixmap(":/pictures/ForwardFishFinUp.png"));
+            ui_fish->setPixmap(QPixmap(":/pictures/BackFishFinUp.png"));
         }
         else{
-            ui_fish->setPixmap(QPixmap(":/pictures/ForwardFishIdle.png"));
+            ui_fish->setPixmap(QPixmap(":/pictures/BackFishIdle.png"));
         }
         this->f_brain->resetPrevDepth();
     }
     else {
+        qDebug() << "width: " << ui_fish->width();
+        qDebug() << "height: " << ui_fish->height();
         if(face_left){
             if(sprite_index == 1){
                 ui_fish->setPixmap(QPixmap(":/pictures/FishFinUp.png"));
