@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     brain.cpp \
     pillar.cpp \
     gamelogic.cpp \
-    interferences.cpp
+    interferences.cpp \
+    hook.cpp
 
 HEADERS  += mainwindow.h \
     fish.h \
@@ -32,7 +33,8 @@ HEADERS  += mainwindow.h \
     brain.h \
     pillar.h \
     gamelogic.h \
-    interferences.h
+    interferences.h \
+    hook.h
 
 FORMS    += mainwindow.ui
 

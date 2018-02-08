@@ -14,5 +14,6 @@
         <file>ForwardFishIdle.png</file>
         <file>BackFishFinUp.png</file>
         <file>BackFishIdle.png</file>
+        <file>Hook.png</file>
     </qresource>
 </RCC>

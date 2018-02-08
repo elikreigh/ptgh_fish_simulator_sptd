@@ -54,8 +54,8 @@ void Fish::set_fish(QLabel *fish){
 }
 
 void Fish::brain_setup(){
-    f_brain->setX(1050);
-    f_brain->setY(300);
+    f_brain->setX(25);
+    f_brain->setY(10);
     f_brain->setDestination();
     f_brain->set_fwidth(111);
     f_brain->set_fheight(71);
@@ -66,7 +66,7 @@ void Fish::sprite_setup(){
 }
 
 /*Mutator for state*/
-void Fish::logic(Interferences* pile[3]){
+void Fish::logic(Interferences* pile[4]){
     this->f_brain->decisionState(pile);
     this->set_left(f_brain->getDirection());
     this->set_forward(f_brain->getDirection());
@@ -105,13 +105,17 @@ void Fish::set_forward(Move_Type dir){
 
 void Fish::frighten(QPoint mouse_cord){
     f_brain->runFromMouseClick(mouse_cord);
-    f_brain->set_state(Scared);
+    f_brain->set_state(FightOrFlight);
 }
 
 void Fish::feeding(){
     if(f_brain->getHunger() > .25){
         f_brain->set_state(Feeding);
     }
+}
+
+void Fish::pulled(){
+    f_brain->set_state(Caught);
 }
 
 void Fish::swim(){
@@ -153,8 +157,8 @@ void Fish::cycle_sprite(){
 
     if(f_brain->getDepth() < f_brain->getPrevDepth()){
         ui_fish->resize(ui_fish->width()+4, ui_fish->height()+2);
-        qDebug() << "width: " << ui_fish->width();
-        qDebug() << "height: " << ui_fish->height();
+        //qDebug() << "width: " << ui_fish->width();
+        //qDebug() << "height: " << ui_fish->height();
         if(sprite_index == 1){
             ui_fish->setPixmap(QPixmap(":/pictures/ForwardFishFinUp.png"));
         }
@@ -165,8 +169,8 @@ void Fish::cycle_sprite(){
     }
     else if(f_brain->getDepth() > f_brain->getPrevDepth()){
         ui_fish->resize(ui_fish->width()-4, ui_fish->height()-2);
-        qDebug() << "width: " << ui_fish->width();
-        qDebug() << "height: " << ui_fish->height();
+        //qDebug() << "width: " << ui_fish->width();
+        //qDebug() << "height: " << ui_fish->height();
         if(sprite_index == 1){
             ui_fish->setPixmap(QPixmap(":/pictures/BackFishFinUp.png"));
         }
@@ -176,8 +180,8 @@ void Fish::cycle_sprite(){
         this->f_brain->resetPrevDepth();
     }
     else {
-        qDebug() << "width: " << ui_fish->width();
-        qDebug() << "height: " << ui_fish->height();
+        //qDebug() << "width: " << ui_fish->width();
+        //qDebug() << "height: " << ui_fish->height();
         if(face_left){
             if(sprite_index == 1){
                 ui_fish->setPixmap(QPixmap(":/pictures/FishFinUp.png"));
@@ -201,7 +205,7 @@ void Fish::cycle_sprite(){
         sprite_index = 0;
 }
 
-bool Fish::eat_food(Interferences *pile[3]){
+bool Fish::eat_food(Interferences *pile[4]){
     bool ans = false;
     if(!pile[2]->get_label()->isHidden()){
         int food_right = pile[2]->get_right();
@@ -212,6 +216,44 @@ bool Fish::eat_food(Interferences *pile[3]){
             ans = true;
             f_brain->set_state(DecideMove);
             f_brain->reduce_hunger();
+        }
+    }
+    return ans;
+}
+
+bool Fish::eat_hook(Interferences *pile[4]){
+    bool ans = false;
+    if(!pile[3]->get_label()->isHidden()){
+        int food_right = pile[3]->get_right();
+        int food_left = pile[3]->get_left();
+        int food_top = pile[3]->get_top();
+        int food_bottom = pile[3]->get_bottom();
+        if((f_brain->getRight() <= (food_right+10) && f_brain->getRight() >= (food_right-10)) && (f_brain->getBottom() <= (food_bottom+10) && f_brain->getBottom() >= (food_bottom-10))){
+            ans = true;
+            f_brain->set_state(Caught);
+        }
+    }
+    return ans;
+}
+
+Avoidance Fish::try_and_eat(Interferences *pile[4]){
+    Avoidance ans = Null;
+    for(int i = 0; i <= 3; i++){
+        if(!pile[i]->get_label()->isHidden()){
+            int pile_right = pile[i]->get_right();
+            int pile_left = pile[i]->get_left();
+            int pile_top = pile[i]->get_top();
+            int pile_bottom = pile[i]->get_bottom();
+            if((f_brain->getLeft() <= (pile_left+25) && f_brain->getLeft() >= (pile_left-25)) && (f_brain->getTop() <= (pile_top+25) && f_brain->getTop() >= (pile_top-25))){
+                if(pile[i]->get_type() == Food){
+                    ans = Food;
+                    f_brain->set_state(DecideMove);
+                    f_brain->reduce_hunger();
+                }
+                if(pile[i]->get_type() == Hooks){
+                    ans = Hooks;
+                }
+            }
         }
     }
     return ans;

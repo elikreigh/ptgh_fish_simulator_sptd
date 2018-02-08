@@ -7,7 +7,7 @@
 #include <QImage>
 #include <cstdlib>
 
-enum Avoidance {Food, Obstical};
+enum Avoidance {Food, Obstical, Hooks, Null};
 class Interferences
 {
 public:

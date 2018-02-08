@@ -57,6 +57,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     feeding_button1 = new QPushButton();
 
+    hook = new Hook();
+
     //mouse coordinates
     mouse_cord.setX(0);
     mouse_cord.setY(0);
@@ -80,6 +82,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     feeding_button1 = (findChild<QPushButton*>("feeding_button"));
 
+    hook->set_hook(findChild<QLabel*>("hook"));
+
     mainFish->set_fish(findChild<QLabel*>("Fish"));
     mainFish->sprite_setup();
     mainFish->brain_setup();
@@ -90,11 +94,11 @@ MainWindow::MainWindow(QWidget *parent) :
     pile[0] = pillar1;
     pile[1] = pillar2;
     pile[2] = food;
+    pile[3] = hook;
 
-    for(int i = 0; i < 3; i++){
+    for(int i = 0; i <= 3; i++){
         pile[i]->set_depth(rand()%10);
     }
-    pile[0]->set_depth(5);
 
     //timer: starting move events
     //animations_timer cycles fish sprite, can be included with the moving animation
@@ -150,11 +154,23 @@ void MainWindow::movement_logic(){
         /*if(findChild<QLabel*>("single_bubble1") != 0){
             single_bubble1->float_up();
         }*/
+        if (mainFish->get_y() < -100) {
+            qApp->quit();
+            QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+        }
         mainFish->logic(pile);
-        if(mainFish->eat_food(pile)){
-            food->eaten();
+        //dealing with the hook would occur in the class GameLogic
+        //this rendition deals with game logic within the main window itself.
+        hook->logic(mainFish->get_x());
+        if(mainFish->try_and_eat(pile) == Food){
             sound_fx->setMedia(QUrl("qrc:/sound/munch.mp3"));
             sound_fx->play();
+            food->eaten();
+        }
+        else if(mainFish->eat_hook(pile)){
+            sound_fx->setMedia(QUrl("qrc:/sound/munch.mp3"));
+            sound_fx->play();
+            hook->eaten();
         }
         single_bubble1->float_up();
         if(food->no_over_lap(pile)){
@@ -204,13 +220,16 @@ void MainWindow::next_frame(){
 
 /*Mouse Tracking*/
 void MainWindow::mousePressEvent(QMouseEvent *event){
-    qDebug() << "Before Click Event";
     if(ui->stackedWidget->currentIndex() == 1){
         sound_fx->setMedia(QUrl("qrc:/sound/tap.mp3"));
         sound_fx->play();
         mouse_cord = event->pos();
-        mainFish->frighten(mouse_cord);
-        qDebug() << "After Click Event";
+
+        int distanceX = abs(mouse_cord.x()-mainFish->get_x());
+        int distanceY = abs(mouse_cord.y()-mainFish->get_y());
+        if(distanceX < 390 && distanceY < 390){
+            mainFish->frighten(mouse_cord);
+        }
     }
 }
 
@@ -258,8 +277,7 @@ void MainWindow::on_feeding_button_clicked(){
 void MainWindow::on_kill_button_clicked(){
     sound_fx->setMedia(QUrl("qrc:/sound/click.mp3"));
     sound_fx->play();
-    qApp->quit();
-    QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+    hook->show_hook();
 }
 
 /*Settings Screen Inputs*/

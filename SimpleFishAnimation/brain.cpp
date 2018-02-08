@@ -47,7 +47,7 @@ brain::brain(int width, int height){
     place.setY(10);
     max_width = width-131;
     max_height = height;
-    hunger = 0;
+    hunger = .25;
     bob_counter = 0;
     fish_speed = 1;
     current_state = Idle;
@@ -83,12 +83,12 @@ void brain::set_fheight(int height){
 
 //Function to return the current x attribute of the fish
 int brain::getX(){
-    return place.x();
+    return place.x()+fish_width/2;
 }
 
 //Function to return the current y attribute of the fish
 int brain::getY(){
-    return place.y();
+    return place.y()+fish_height/2;
 }
 
 float brain::getDepth(){
@@ -111,8 +111,6 @@ float brain::getHunger(){
 void brain::setX(int new_x){
     if (new_x < 10+fish_width) place.setX(10+fish_width);
     else if (new_x > max_width-fish_width-10){
-        qDebug() << "new_x: " << new_x;
-        qDebug() << "max_width: " << max_width << "\nfish_width: " << fish_width;
         place.setX(max_width-fish_width-10);
     }
     else place.setX(new_x);
@@ -122,8 +120,6 @@ void brain::setX(int new_x){
 void brain::setY(int new_y){
     if (new_y < 10+fish_height) place.setY(10+fish_height);
     else if (new_y > max_height-fish_height-100){
-        qDebug() << "new_y: " << new_y;
-        qDebug() << "max_height: " << max_height << "\nfish_width: " << fish_height;
         place.setY(max_height-fish_height-100);
     }
     else place.setY(new_y);
@@ -156,22 +152,22 @@ void brain::setDestination(QPoint dest, float destdepth){
     this->destdepth = destdepth;
 }
 
-void brain::setDestination(Interferences* pile[3]){
+void brain::setDestination(Interferences* pile[4]){
     destination.setX(pile[2]->get_left());
-    destination.setY(pile[2]->get_top());
+    destination.setY(pile[2]->get_top()-10);
     destdepth = pile[2]->get_depth();
 }
 
 void brain::setDestination(int new_x, int new_y){
     if (new_x < 10) destination.setX(10);
-    else if (new_x > max_width){
-        destination.setX(max_width);
+    else if (new_x > max_width-10){
+        destination.setX(max_width-10);
     }
     else destination.setX(new_x);
 
     if (new_y < 10) destination.setY(10);
-    else if (new_y > max_height-100){
-        destination.setY(max_height-100);
+    else if (new_y > max_height-175){
+        destination.setY(max_height-175);
     }
     else destination.setY(new_y);
 
@@ -182,31 +178,31 @@ void brain::setDestination(int new_x, int new_y){
 //Placement of click will determine opposite position around fishes current location
 //Distance away will be determined by closeness of click to current position
 void brain::runFromMouseClick(QPoint dest){
-    int distanceX = dest.x();//(abs(dest.x()-this->getX()));
-    int distanceY = dest.y();//(abs(dest.y()-this->getY()));
+    int distanceX = (abs(dest.x()-getX()));
+    int distanceY = (abs(dest.y()-getY()));
+
+    int runDistX = rand()%390+50;
+    int runDistY = rand()%390+50;
 
     //Destination will follow this pattern with values corresponding
     //to distance away from mouse 180 deg around fish location
-    /*if(dest.x() <= getX()+fish_width/2) {
-
+    if(dest.x() <= getX()+fish_width/2) {
         if(dest.y() <= getY()+fish_height/2) {
-            setDestination(1000, 500);
+            setDestination(getX()+runDistX, getY()+runDistY);
         }
         else {
-            setDestination(1000, 100);
+            setDestination(getX()+runDistX, getY()-runDistY);
         }
     }
     else {
         if(dest.y() <= getY()+fish_height/2) {
-            setDestination(50, 500);
+            setDestination(getX()-runDistX, getY()+runDistY);
         }
         else {
-            setDestination(50, 500);
+            setDestination(getX()-runDistX, getY()-runDistY);
         }
 
-    }*/
-
-    setDestination(distanceX, distanceY);
+    }
 
     //Runs back to depths 5 to 9
     destdepth = rand()%6 + 4;
@@ -419,7 +415,7 @@ void brain::move(Move_Type dir){
     this->increase_hunger();
 }
 
-void brain::move(Interferences* pile[3]){
+void brain::move(Interferences* pile[4]){
     brain *test = new brain(this);
 
         test->move(this->getDirection());
@@ -546,8 +542,8 @@ void brain::move(Interferences* pile[3]){
 }
 
 //Function to choose the next state of the fish
-void brain::changeState(int input, Interferences *pile[3]){
-    typedef enum {S_Move, S_Idle, S_DecideMove, S_Feeding} SMove;
+void brain::changeState(int input, Interferences *pile[4]){
+    typedef enum {S_Move, S_Idle, S_DecideMove, S_Feeding, S_Scared, S_Caught} SMove;
     static SMove s = S_Idle;
     //Create state transitions
          if(hunger > .50 &&
@@ -559,13 +555,19 @@ void brain::changeState(int input, Interferences *pile[3]){
                  && (current_state == Move))         {s = S_Idle;}
     else if(((place.x() != destination.x()) || (place.y() != destination.y()))
                  && (current_state == Move))         {s = S_Move;}
-    else if(current_state == Scared)                 {s = S_Move;}
+    else if(current_state == FightOrFlight)          {s = S_Scared;}
     else if((((place.x() <= destination.x()+25) && (place.x() >= destination.x()-25)) &&
-                 ((place.y() <= destination.y()+25) && (place.y() >= destination.y()-25))) &&
-                 (current_state == Feeding))         {s = S_DecideMove;}
-     else if(!(((place.x() <= destination.x()+25) && (place.x() >= destination.x()-25)) &&
+                ((place.y() <= destination.y()+25) && (place.y() >= destination.y()-25))) &&
+                (current_state == Scared)+25)        {s = S_DecideMove;}
+    else if(((place.x() != destination.x()) && (place.y() != destination.y()))
+                      && (current_state == Scared))   {s = S_Scared;}
+    else if((((place.x() <= destination.x()+25) && (place.x() >= destination.x()-25)) &&
+                ((place.y() <= destination.y()+25) && (place.y() >= destination.y()-25))) &&
+                (current_state == Feeding))          {s = S_DecideMove;}
+    else if(!(((place.x() <= destination.x()+25) && (place.x() >= destination.x()-25)) &&
                 ((place.y() <= destination.y()+25) && (place.y() >= destination.y()-25))) &&
                 (current_state == Feeding))          {s = S_Feeding;}
+    else if(current_state == Caught)                 {s = S_Caught;}
     else {s = S_Idle;}//If state machine fails, fish goes to Idle state
 
     //Create output table
@@ -578,12 +580,16 @@ void brain::changeState(int input, Interferences *pile[3]){
                       break;
         case(S_Feeding): this->set_state(Feeding);
                       break;
+        case(S_Scared): this->set_state(Scared);
+                      break;
+        case(S_Caught): this->set_state(Caught);
+                      break;
     }
 }
 
 //Function to implement the state of being of the fish and to choose
 // the fish's next state of being
-void brain::decisionState(Interferences* pile[3]){
+void brain::decisionState(Interferences* pile[4]){
     //can be moved to game logic class and passed as a paramater through decisionState call
     int driver;
     srand(time(NULL));
@@ -604,7 +610,7 @@ void brain::decisionState(Interferences* pile[3]){
                 this->move(Up);
             }
             bob_counter++;
-            //qDebug() << "hunger" << hunger;
+            qDebug() << "hunger" << hunger;
             //qDebug() << "After Idle" << this->getX() << " " << this->getY() << "\nFish Dest: " << this->get_destination().x() << " " << this->get_destination().y();
                     break;
         case (DecideMove):
@@ -612,42 +618,44 @@ void brain::decisionState(Interferences* pile[3]){
             this->setDestination();
                     break;
         case (Move):
-            fish_speed = 1;
             this->decisionDirection();
             this->move(pile);
             //qDebug() << "After Move\nFish Pos: " << this->getX() << " " << this->getY() << "\nFish Dest: " << this->get_destination().x() << " " << this->get_destination().y();
             //start moving towards destination
-            //qDebug() << "hunger " << hunger;
+            qDebug() << "hunger " << hunger;
+                    break;
+        case (FightOrFlight):
+            //FightOrFlight is for another rendition of the game where the fish
+            //would decide weather to break through the glass and attach the person tapping or
+            //to run away
+            //not actually, but there was more functionality than changing the speed of the fish
+            fish_speed = 3;
                     break;
         case (Scared):
-            fish_speed = 3;
+            //Scared is for another rendition of the game where scared would
+            //reactively run behind an object in the pile.
+            //since the logic was set up this way, rework would lead to the
+            //same functionality for a missed amount of time
+            this->decisionDirection();
+            this->move(pile);
+            qDebug() << "hunger " << hunger;
                     break;
         case (Feeding):
             fish_speed = 2;
             this->setDestination(pile);
             this->decisionDirection();
             this->move(pile);
-            //qDebug() << "hunger " << hunger;
+            qDebug() << "hunger " << hunger;
+                    break;
+        case (Caught):
+            //A "buddy system" would have been implemented if more time was alloted
+            //This would make it so that the fish would not dictate its own moves, but it
+            //would move in conjumction when the hook was pulled up.
+            fish_speed = 3;
+            this->move(Up);
                     break;
     }
     this->changeState(driver, pile);
-    /*
-    switch(driver){
-        case(0):
-            current_state = Idle;
-            break;
-        case(1):
-        case(2):
-        case(3):
-        case(4):
-        case(5):
-        case(6):
-        case(7):
-            current_state = Move;
-            break;
-        default:
-            current_state = Move;
-    }*/
 }
 
 void brain::decisionDirection(){
@@ -802,9 +810,9 @@ void brain::set_direction(Move_Type direction){
     this->direction = direction;
 }
 
-bool brain::no_over_lap(Interferences* pile[3]){
+bool brain::no_over_lap(Interferences* pile[4]){
     bool ans = true;
-    for(int i = 0; i < 3; i++){
+    for(int i = 0; i <= 3; i++){
         if(pile[i]->get_type() == Obstical){
             int pile_right = pile[i]->get_right();
             int pile_left = pile[i]->get_left();

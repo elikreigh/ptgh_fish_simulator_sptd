@@ -67,9 +67,9 @@ void FishFood::new_spawn(){
     this->set_depth(rand()%10);
 }
 
-bool FishFood::no_over_lap(Interferences *pile[3]){
+bool FishFood::no_over_lap(Interferences *pile[4]){
     bool ans = true;
-    for(int i = 0; i < 3; i++){
+    for(int i = 0; i <= 3; i++){
         int pile_right = pile[i]->get_right();
         int pile_left = pile[i]->get_left();
         int pile_top = pile[i]->get_top();

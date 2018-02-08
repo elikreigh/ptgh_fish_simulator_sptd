@@ -525,6 +525,27 @@ font: 75 auto &quot;MS Serif&quot;;</string>
         <bool>true</bool>
        </property>
       </widget>
+      <widget class="QLabel" name="hook">
+       <property name="geometry">
+        <rect>
+         <x>550</x>
+         <y>-570</y>
+         <width>51</width>
+         <height>601</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background: none;</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap resource="pictures.qrc">:/pictures/Hook.png</pixmap>
+       </property>
+      </widget>
+      <zorder>hook</zorder>
+      <zorder>Fish</zorder>
      </widget>
      <zorder>frame_2</zorder>
      <zorder>sand</zorder>

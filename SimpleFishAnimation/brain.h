@@ -5,7 +5,7 @@
 #include "pillar.h"
 #include "fishfood.h"
 
-enum  Move_State {Move, Idle, DecideMove, Scared, Feeding};
+enum  Move_State {Move, Idle, DecideMove, FightOrFlight, Scared, Feeding, Caught};
 enum Move_Type {Left, UpLeft, Up, UpRight, Right, DownRight, Down, DownLeft,
                 ALeft, AUpLeft, AUp, AUpRight, ARight, ADownRight, ADown, ADownLeft,
                 TLeft, TUpLeft, TUp, TUpRight, TRight, TDownRight, TDown, TDownLeft,};
@@ -16,23 +16,23 @@ public:
     brain(int width, int height);
     brain(brain *other);
 
-    void changeState(int input, Interferences* pile[3]);
+    void changeState(int input, Interferences* pile[4]);
     void moveTypeState(int input);
     Move_State getState();
     Move_Type getDirection();
     Move_Type decisionDirection(int driver);
     void decisionDirection();
-    void decisionState(Interferences* pile[3]);
+    void decisionState(Interferences* pile[4]);
 
     void move(Move_Type dir);
-    void move(Interferences* pile[3]);
+    void move(Interferences* pile[4]);
     void idle_ani();
     void setX(int new_x);
     void setY(int new_y);
     void setDestination();
     void setDestination(QPoint dest, float destdepth);
     void setDestination(int new_x, int new_y);
-    void setDestination(Interferences* pile[3]);
+    void setDestination(Interferences* pile[4]);
     void runFromMouseClick(QPoint dest);
     void set_fwidth(int width);
     void set_fheight(int height);
@@ -57,7 +57,7 @@ public:
 
     QPoint get_destination();
 
-    bool no_over_lap(Interferences* pile[3]);
+    bool no_over_lap(Interferences* pile[4]);
 
 private:
     bool isFood;

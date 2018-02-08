@@ -34,13 +34,16 @@ public:
     void set_forward(Move_Type dir);
     void frighten(QPoint mouse_cord);
     void feeding();
+    void pulled();
     brain get_brain();
     void brain_setup();
     void sprite_setup();
-    bool no_over_lap(Interferences* pile[3]);
-    bool eat_food(Interferences* pile[3]);
+    bool no_over_lap(Interferences* pile[4]);
+    bool eat_food(Interferences* pile[4]);
+    bool eat_hook(Interferences* pile[4]);
+    Avoidance try_and_eat(Interferences* pile[4]);
 
-    void logic(Interferences* pile[3]);
+    void logic(Interferences* pile[4]);
 
 private:
     QLabel *ui_fish;

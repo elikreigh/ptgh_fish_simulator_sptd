@@ -13,6 +13,7 @@
 #include "fishfood.h"
 #include "pillar.h"
 #include "gamelogic.h"
+#include "hook.h"
 
 
 namespace Ui {
@@ -69,13 +70,14 @@ private:
     FishFood *food;
     Pillar *pillar1;
     Pillar *pillar2;
+    Hook *hook;
 
     QPushButton *feeding_button1;
 
     //label layout
     QVBoxLayout *main_layout;
 
-    Interferences *pile[3];
+    Interferences *pile[4];
 
     QPoint mouse_cord;
 };
